@@ -5,9 +5,9 @@
 Network Working Group                                          M. Koster
 Internet-Draft                                               SmartThings
 Intended status: Standards Track                              A. Keranen
-Expires: September 29, 2017                                   J. Jimenez
+Expires: October 1, 2017                                      J. Jimenez
                                                                 Ericsson
-                                                          March 28, 2017
+                                                          March 30, 2017
 
 
 Publish-Subscribe Broker for the Constrained Application Protocol (CoAP)
@@ -37,7 +37,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on September 29, 2017.
+   This Internet-Draft will expire on October 1, 2017.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Koster, et al.         Expires September 29, 2017               [Page 1]
+Koster, et al.           Expires October 1, 2017                [Page 1]
 
 Internet-Draft      Publish-Subscribe Broker for CoAP         March 2017
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Koster, et al.         Expires September 29, 2017               [Page 2]
+Koster, et al.           Expires October 1, 2017                [Page 2]
 
 Internet-Draft      Publish-Subscribe Broker for CoAP         March 2017
 
@@ -165,7 +165,7 @@ Internet-Draft      Publish-Subscribe Broker for CoAP         March 2017
 
 
 
-Koster, et al.         Expires September 29, 2017               [Page 3]
+Koster, et al.           Expires October 1, 2017                [Page 3]
 
 Internet-Draft      Publish-Subscribe Broker for CoAP         March 2017
 
@@ -221,7 +221,7 @@ Internet-Draft      Publish-Subscribe Broker for CoAP         March 2017
 
 
 
-Koster, et al.         Expires September 29, 2017               [Page 4]
+Koster, et al.           Expires October 1, 2017                [Page 4]
 
 Internet-Draft      Publish-Subscribe Broker for CoAP         March 2017
 
@@ -277,7 +277,7 @@ Internet-Draft      Publish-Subscribe Broker for CoAP         March 2017
 
 
 
-Koster, et al.         Expires September 29, 2017               [Page 5]
+Koster, et al.           Expires October 1, 2017                [Page 5]
 
 Internet-Draft      Publish-Subscribe Broker for CoAP         March 2017
 
@@ -325,29 +325,30 @@ Internet-Draft      Publish-Subscribe Broker for CoAP         March 2017
 
    Method:  GET
 
-   URI Template:  /.well-known/core
-
-   URI Template:  /{+ps/}{topic}{/topic*}{?q*}
+   URI Template:  /{+ps}{/topic_}?{q_}
 
    URI Template Variables:
 
 
 
-Koster, et al.         Expires September 29, 2017               [Page 6]
+
+
+Koster, et al.           Expires October 1, 2017                [Page 6]
 
 Internet-Draft      Publish-Subscribe Broker for CoAP         March 2017
 
 
-      /.well-known/core :=  for discovering the pubsub API (optional)
+   ps :=
+   : pubsub API path (optional). The base URI path of the pubsub API,
+     as obtained from discovery, used to discover topics.
 
-      ps :=  pubsub API path (optional).  The base URI path of the
-         pubsub API, as obtained from discovery, used to discover
-         topics.
+   topic :=
+   : The desired topic to return links for (optional).
 
-      topic :=  The desired topic to return links for (optional).
 
-      q :=  Query Filter (optional).  MAY contain a query filter list as
-         per [RFC6690] Section 4.1.
+   q :=
+   : Query Filter (optional). MAY contain a query filter list as per
+     {{RFC6690}} Section 4.1.
 
    Content-Format:  application/link-format
 
@@ -388,8 +389,7 @@ Internet-Draft      Publish-Subscribe Broker for CoAP         March 2017
 
 
 
-
-Koster, et al.         Expires September 29, 2017               [Page 7]
+Koster, et al.           Expires October 1, 2017                [Page 7]
 
 Internet-Draft      Publish-Subscribe Broker for CoAP         March 2017
 
@@ -445,7 +445,7 @@ Internet-Draft      Publish-Subscribe Broker for CoAP         March 2017
 
 
 
-Koster, et al.         Expires September 29, 2017               [Page 8]
+Koster, et al.           Expires October 1, 2017                [Page 8]
 
 Internet-Draft      Publish-Subscribe Broker for CoAP         March 2017
 
@@ -464,7 +464,7 @@ Internet-Draft      Publish-Subscribe Broker for CoAP         March 2017
 
    Method:  POST
 
-   URI Template:  /{+ps/}{topic}{/topic*}
+   URI Template:  /{+ps}{/topic_}?{q_}
 
    URI Template Variables:
 
@@ -501,14 +501,14 @@ Internet-Draft      Publish-Subscribe Broker for CoAP         March 2017
 
 
 
-Koster, et al.         Expires September 29, 2017               [Page 9]
+Koster, et al.           Expires October 1, 2017                [Page 9]
 
 Internet-Draft      Publish-Subscribe Broker for CoAP         March 2017
 
 
           Client                                          Broker
             |                                               |
-            | ---------- POST /ps "<topic1>;ct=50" -------->|
+            | ---------- POST /ps/ "<topic1>;ct=50" -------->|
             |                                               |
             | <---------------- 2.01 Created ---------------|
             |               Location: /ps/topic1            |
@@ -557,7 +557,7 @@ Internet-Draft      Publish-Subscribe Broker for CoAP         March 2017
 
 
 
-Koster, et al.         Expires September 29, 2017              [Page 10]
+Koster, et al.           Expires October 1, 2017               [Page 10]
 
 Internet-Draft      Publish-Subscribe Broker for CoAP         March 2017
 
@@ -613,7 +613,7 @@ Internet-Draft      Publish-Subscribe Broker for CoAP         March 2017
 
 
 
-Koster, et al.         Expires September 29, 2017              [Page 11]
+Koster, et al.           Expires October 1, 2017               [Page 11]
 
 Internet-Draft      Publish-Subscribe Broker for CoAP         March 2017
 
@@ -669,7 +669,7 @@ Internet-Draft      Publish-Subscribe Broker for CoAP         March 2017
 
 
 
-Koster, et al.         Expires September 29, 2017              [Page 12]
+Koster, et al.           Expires October 1, 2017               [Page 12]
 
 Internet-Draft      Publish-Subscribe Broker for CoAP         March 2017
 
@@ -725,7 +725,7 @@ Internet-Draft      Publish-Subscribe Broker for CoAP         March 2017
 
 
 
-Koster, et al.         Expires September 29, 2017              [Page 13]
+Koster, et al.           Expires October 1, 2017               [Page 13]
 
 Internet-Draft      Publish-Subscribe Broker for CoAP         March 2017
 
@@ -781,7 +781,7 @@ Internet-Draft      Publish-Subscribe Broker for CoAP         March 2017
 
 
 
-Koster, et al.         Expires September 29, 2017              [Page 14]
+Koster, et al.           Expires October 1, 2017               [Page 14]
 
 Internet-Draft      Publish-Subscribe Broker for CoAP         March 2017
 
@@ -837,7 +837,7 @@ Internet-Draft      Publish-Subscribe Broker for CoAP         March 2017
 
 
 
-Koster, et al.         Expires September 29, 2017              [Page 15]
+Koster, et al.           Expires October 1, 2017               [Page 15]
 
 Internet-Draft      Publish-Subscribe Broker for CoAP         March 2017
 
@@ -893,7 +893,7 @@ Internet-Draft      Publish-Subscribe Broker for CoAP         March 2017
 
 
 
-Koster, et al.         Expires September 29, 2017              [Page 16]
+Koster, et al.           Expires October 1, 2017               [Page 16]
 
 Internet-Draft      Publish-Subscribe Broker for CoAP         March 2017
 
@@ -949,7 +949,7 @@ Internet-Draft      Publish-Subscribe Broker for CoAP         March 2017
 
 
 
-Koster, et al.         Expires September 29, 2017              [Page 17]
+Koster, et al.           Expires October 1, 2017               [Page 17]
 
 Internet-Draft      Publish-Subscribe Broker for CoAP         March 2017
 
@@ -1005,7 +1005,7 @@ Internet-Draft      Publish-Subscribe Broker for CoAP         March 2017
 
 
 
-Koster, et al.         Expires September 29, 2017              [Page 18]
+Koster, et al.           Expires October 1, 2017               [Page 18]
 
 Internet-Draft      Publish-Subscribe Broker for CoAP         March 2017
 
@@ -1061,7 +1061,7 @@ Internet-Draft      Publish-Subscribe Broker for CoAP         March 2017
 
 
 
-Koster, et al.         Expires September 29, 2017              [Page 19]
+Koster, et al.           Expires October 1, 2017               [Page 19]
 
 Internet-Draft      Publish-Subscribe Broker for CoAP         March 2017
 
@@ -1117,7 +1117,7 @@ Internet-Draft      Publish-Subscribe Broker for CoAP         March 2017
 
 
 
-Koster, et al.         Expires September 29, 2017              [Page 20]
+Koster, et al.           Expires October 1, 2017               [Page 20]
 
 Internet-Draft      Publish-Subscribe Broker for CoAP         March 2017
 
@@ -1173,7 +1173,7 @@ Internet-Draft      Publish-Subscribe Broker for CoAP         March 2017
 
 
 
-Koster, et al.         Expires September 29, 2017              [Page 21]
+Koster, et al.           Expires October 1, 2017               [Page 21]
 
 Internet-Draft      Publish-Subscribe Broker for CoAP         March 2017
 
@@ -1229,7 +1229,7 @@ Internet-Draft      Publish-Subscribe Broker for CoAP         March 2017
 
 
 
-Koster, et al.         Expires September 29, 2017              [Page 22]
+Koster, et al.           Expires October 1, 2017               [Page 22]
 
 Internet-Draft      Publish-Subscribe Broker for CoAP         March 2017
 
@@ -1285,4 +1285,4 @@ Authors' Addresses
 
 
 
-Koster, et al.         Expires September 29, 2017              [Page 23]
+Koster, et al.           Expires October 1, 2017               [Page 23]

@@ -312,9 +312,9 @@ address {
   <meta name="generator" content="xml2rfc version 2.5.2 - http://tools.ietf.org/tools/xml2rfc" />
   <link rel="schema.dct" href="http://purl.org/dc/terms/" />
 
-  <meta name="dct.creator" content="Koster, M., Keranen, A., and J. Jimenez" />
+  <meta name="dct.creator" content="Koster, M., Keranen, A., and J. Jim&#233;nez" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-core-coap-pubsub-01" />
-  <meta name="dct.issued" scheme="ISO8601" content="2017-3-28" />
+  <meta name="dct.issued" scheme="ISO8601" content="2017-3-30" />
   <meta name="dct.abstract" content="The Constrained Application Protocol (CoAP), and related extensions are intended to support machine-to-machine communication in systems where one or more nodes are resource constrained, in particular for low power wireless sensor networks. This document defines a publish-subscribe broker for CoAP that extends the capabilities of CoAP for supporting nodes with long breaks in connectivity and/or up-time." />
   <meta name="description" content="The Constrained Application Protocol (CoAP), and related extensions are intended to support machine-to-machine communication in systems where one or more nodes are resource constrained, in particular for low power wireless sensor networks. This document defines a publish-subscribe broker for CoAP that extends the capabilities of CoAP for supporting nodes with long breaks in connectivity and/or up-time." />
 
@@ -338,8 +338,8 @@ address {
   <td class="right">A. Keranen</td>
 </tr>
 <tr>
-  <td class="left">Expires: September 29, 2017</td>
-  <td class="right">J. Jimenez</td>
+  <td class="left">Expires: October 1, 2017</td>
+  <td class="right">J. Jim&#233;nez</td>
 </tr>
 <tr>
   <td class="left"></td>
@@ -347,7 +347,7 @@ address {
 </tr>
 <tr>
   <td class="left"></td>
-  <td class="right">March 28, 2017</td>
+  <td class="right">March 30, 2017</td>
 </tr>
 
     	
@@ -367,7 +367,7 @@ address {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at http://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on September 29, 2017.</p>
+<p>This Internet-Draft will expire on October 1, 2017.</p>
 <h1 id="rfc.copyrightnotice">
   <a href="#rfc.copyrightnotice">Copyright Notice</a>
 </h1>
@@ -495,27 +495,29 @@ Clients        pubsub         Broker
   <dt>Method:</dt>
   <dd style="margin-left: 8">GET</dd>
   <dt>URI Template:</dt>
-  <dd style="margin-left: 8">/.well-known/core</dd>
-  <dt>URI Template:</dt>
-  <dd style="margin-left: 8">/{+ps/}{topic}{/topic*}{?q*}</dd>
-  <dt>URI Template Variables:</dt>
-  <dd style="margin-left: 8">
-    <dl>
-      <dt>/.well-known/core :=</dt>
-      <dd style="margin-left: 8">for discovering the pubsub API (optional)</dd>
-      <dt>ps :=</dt>
-      <dd style="margin-left: 8">pubsub API path (optional). The base URI path of the pubsub API, as obtained from discovery, used to discover topics.</dd>
-      <dt>topic :=</dt>
-      <dd style="margin-left: 8">The desired topic to return links for (optional).</dd>
-      <dt>q :=</dt>
-      <dd style="margin-left: 8">Query Filter (optional). MAY contain a query filter list as per <a href="#RFC6690">[RFC6690]</a> Section 4.1.</dd>
-    </dl>
-    <p> </p>
-  </dd>
+  <dd style="margin-left: 8">/{+ps}{/topic<em>}?{q</em>}</dd>
+</dl>
+<p id="rfc.section.4.1.p.6">URI Template Variables:</p>
+<pre>
+ps :=
+: pubsub API path (optional). The base URI path of the pubsub API,
+  as obtained from discovery, used to discover topics.
+
+topic :=
+: The desired topic to return links for (optional).
+
+
+q :=
+: Query Filter (optional). MAY contain a query filter list as per
+  {{RFC6690}} Section 4.1.
+</pre>
+<p/>
+
+<dl>
   <dt>Content-Format:</dt>
   <dd style="margin-left: 8">application/link-format</dd>
 </dl>
-<p id="rfc.section.4.1.p.6">The following response codes are defined for this interface:</p>
+<p id="rfc.section.4.1.p.8">The following response codes are defined for this interface:</p>
 <p/>
 
 <dl>
@@ -583,7 +585,7 @@ Client                                          Broker
   <dt>Method:</dt>
   <dd style="margin-left: 8">POST</dd>
   <dt>URI Template:</dt>
-  <dd style="margin-left: 8">/{+ps/}{topic}{/topic*}</dd>
+  <dd style="margin-left: 8">/{+ps}{/topic<em>}?{q</em>}</dd>
   <dt>URI Template Variables:</dt>
   <dd style="margin-left: 8">
     <dl>
@@ -618,7 +620,7 @@ Client                                          Broker
 <pre>
 Client                                          Broker
   |                                               |
-  | ---------- POST /ps "&lt;topic1&gt;;ct=50" --------&gt;|
+  | ---------- POST /ps/ "&lt;topic1&gt;;ct=50" --------&gt;|
   |                                               |
   | &lt;---------------- 2.01 Created ---------------|
   |               Location: /ps/topic1            |
@@ -1126,7 +1128,7 @@ Client                                         Broker
 	<span class="vcardline">
 	  <span class="fn">Jaime Jim&#233;nez</span> 
 	  <span class="n hidden">
-		<span class="family-name">Jimenez</span>
+		<span class="family-name">Jim&#233;nez</span>
 	  </span>
 	</span>
 	<span class="org vcardline">Ericsson</span>
