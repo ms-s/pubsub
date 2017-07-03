@@ -1101,7 +1101,7 @@ Internet-Draft      Publish-Subscribe Broker for CoAP          July 2017
 
    Depending on the level of trust users and system designers place in
    the CoAP pubsub broker, the use of end-to-end object security is
-   RECOMMENDED [I-D.selander-ace-object-security].
+   RECOMMENDED [I-D.ietf-core-object-security].
 
    When only end-to-end encryption is necessary and the CoAP Broker is
    trusted, Payload Only Protection (Mode:PAYL) could be used.  The
@@ -1189,15 +1189,15 @@ Internet-Draft      Publish-Subscribe Broker for CoAP          July 2017
 
 11.1.  Normative References
 
+   [I-D.ietf-core-object-security]
+              Selander, G., Mattsson, J., Palombini, F., and L. Seitz,
+              "Object Security of CoAP (OSCOAP)", draft-ietf-core-
+              object-security-04 (work in progress), July 2017.
+
    [I-D.ietf-core-resource-directory]
               Shelby, Z., Koster, M., Bormann, C., and P. Stok, "CoRE
               Resource Directory", draft-ietf-core-resource-directory-10
               (work in progress), March 2017.
-
-   [I-D.selander-ace-object-security]
-              Selander, G., Mattsson, J., Palombini, F., and L. Seitz,
-              "Object Security of CoAP (OSCOAP)", draft-selander-ace-
-              object-security-06 (work in progress), October 2016.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
