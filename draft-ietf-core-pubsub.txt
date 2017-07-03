@@ -11,7 +11,7 @@ Expires: January 4, 2018                                      J. Jimenez
 
 
 Publish-Subscribe Broker for the Constrained Application Protocol (CoAP)
-                     draft-ietf-core-coap-pubsub-01
+                     draft-ietf-core-coap-pubsub-02
 
 Abstract
 
@@ -72,23 +72,23 @@ Table of Contents
      3.3.  CoAP pubsub Client  . . . . . . . . . . . . . . . . . . .   5
      3.4.  CoAP pubsub Topic . . . . . . . . . . . . . . . . . . . .   5
      3.5.  Brokerless pubsub . . . . . . . . . . . . . . . . . . . .   5
-   4.  CoAP pubsub API . . . . . . . . . . . . . . . . . . . . . . .   6
+   4.  CoAP pubsub REST API  . . . . . . . . . . . . . . . . . . . .   6
      4.1.  DISCOVERY . . . . . . . . . . . . . . . . . . . . . . . .   6
      4.2.  CREATE  . . . . . . . . . . . . . . . . . . . . . . . . .   8
      4.3.  PUBLISH . . . . . . . . . . . . . . . . . . . . . . . . .  10
      4.4.  SUBSCRIBE . . . . . . . . . . . . . . . . . . . . . . . .  13
      4.5.  UNSUBSCRIBE . . . . . . . . . . . . . . . . . . . . . . .  14
-     4.6.  READ  . . . . . . . . . . . . . . . . . . . . . . . . . .  15
+     4.6.  READ  . . . . . . . . . . . . . . . . . . . . . . . . . .  16
      4.7.  REMOVE  . . . . . . . . . . . . . . . . . . . . . . . . .  17
    5.  CoAP pubsub Operation with Resource Directory . . . . . . . .  18
    6.  Sleep-Wake Operation  . . . . . . . . . . . . . . . . . . . .  19
    7.  Simple Flow Control . . . . . . . . . . . . . . . . . . . . .  19
-   8.  Security Considerations . . . . . . . . . . . . . . . . . . .  19
+   8.  Security Considerations . . . . . . . . . . . . . . . . . . .  20
    9.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  21
      9.1.  Resource Type value 'core.ps' . . . . . . . . . . . . . .  21
      9.2.  Resource Type value 'core.ps.discover'  . . . . . . . . .  21
-     9.3.  Response Code value '2.04'  . . . . . . . . . . . . . . .  21
-     9.4.  Response Code value '4.29'  . . . . . . . . . . . . . . .  21
+     9.3.  Response Code value '2.07'  . . . . . . . . . . . . . . .  21
+     9.4.  Response Code value '4.29'  . . . . . . . . . . . . . . .  22
    10. Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  22
    11. References  . . . . . . . . . . . . . . . . . . . . . . . . .  22
      11.1.  Normative References . . . . . . . . . . . . . . . . . .  22
@@ -152,16 +152,16 @@ Internet-Draft      Publish-Subscribe Broker for CoAP          July 2017
       delivered by the broker to subscribed receivers.
 
    CoAP pubsub service:  A group of REST resources, as defined in this
-      document, which together implement the CoAP pubsub service.
+      document, which together implement the required features of this
+      specification.
 
    CoAP pubsub Broker:  A server node capable of receiving messages
       (publications) from and sending messages to other nodes, and able
       to match subscriptions and publications in order to route messages
       to the right destinations.  The broker can also temporarily store
-      publications to satisfy future subscriptions.
+      publications to satisfy future subscriptions and pending
+      notifications.
 
-   CoAP pubsub Client:  A CoAP client which is capable of publish or
-      subscribe operations as defined in this specification.
 
 
 
@@ -169,6 +169,9 @@ Koster, et al.           Expires January 4, 2018                [Page 3]
 
 Internet-Draft      Publish-Subscribe Broker for CoAP          July 2017
 
+
+   CoAP pubsub Client:  A CoAP client which is capable of publish or
+      subscribe operations as defined in this specification.
 
    Topic:  A unique identifier for a particular item being published
       and/or subscribed to.  A broker uses the topics to match
@@ -181,7 +184,7 @@ Internet-Draft      Publish-Subscribe Broker for CoAP          July 2017
 
    Figure 1 shows the architecture of a CoAP pubsub service.  CoAP
    pubsub Clients interact with a CoAP pubsub Broker through the CoAP
-   pubsub API which is hosted by the Broker.  State information is
+   pubsub REST API which is hosted by the Broker.  State information is
    updated between the Clients and the Broker.  The CoAP pubsub Broker
    performs a store-and-forward of state update representations between
    certain CoAP pubsub Clients.  Clients Subscribe to topics upon which
@@ -208,16 +211,13 @@ Internet-Draft      Publish-Subscribe Broker for CoAP          July 2017
 
 3.2.  CoAP pubsub Broker
 
-   A CoAP pubsub Broker is a CoAP Server that exposes an API for clients
-   to use to initiate publish-subscribe interactions.  Avoiding the need
-   for direct reachability between clients, the broker only needs to be
-   reachable from all clients.  The broker also needs to have sufficient
-   resources (storage, bandwidth, etc.) to host CoAP resource services,
-   and potentially buffer messages, on behalf of the clients.
-
-
-
-
+   A CoAP pubsub Broker is a CoAP Server that exposes a REST API for
+   clients to use to initiate publish-subscribe interactions.  Avoiding
+   the need for direct reachability between clients, the broker only
+   needs to be reachable from all clients.  The broker also needs to
+   have sufficient resources (storage, bandwidth, etc.) to host CoAP
+   resource services, and potentially buffer messages, on behalf of the
+   clients.
 
 
 
@@ -229,12 +229,13 @@ Internet-Draft      Publish-Subscribe Broker for CoAP          July 2017
 3.3.  CoAP pubsub Client
 
    A CoAP pubsub Client interacts with a CoAP pubsub Broker using the
-   CoAP pubsub API.  Clients initiate interactions with a CoAP pubsub
-   broker.  A data source (e.g., sensor clients) can publish state
-   updates to the broker and data sinks (e.g., actuator clients) can
-   read from or subscribe to state updates from the broker.  Application
-   clients can make use of both publish and subscribe in order to
-   exchange state updates with data sources and sinks.
+   CoAP pubsub REST API defined in this document.  Clients initiate
+   interactions with a CoAP pubsub broker.  A data source (e.g., sensor
+   clients) can publish state updates to the broker and data sinks
+   (e.g., actuator clients) can read from or subscribe to state updates
+   from the broker.  Application clients can make use of both publish
+   and subscribe in order to exchange state updates with data sources
+   and data sinks.
 
 3.4.  CoAP pubsub Topic
 
@@ -276,19 +277,20 @@ Internet-Draft      Publish-Subscribe Broker for CoAP          July 2017
 
 
 
-
 Koster, et al.           Expires January 4, 2018                [Page 5]
 
 Internet-Draft      Publish-Subscribe Broker for CoAP          July 2017
 
 
-4.  CoAP pubsub API
+4.  CoAP pubsub REST API
 
-   This section defines the API exposed by a CoAP pubsub Broker to
+   This section defines the REST API exposed by a CoAP pubsub Broker to
    pubsub Clients.  The examples throughout this section assume the use
    of CoAP [RFC7252].  A CoAP pubsub Broker implementing this
-   specification MUST support the DISCOVERY, CREATE, PUBLISH, SUBSCRIBE,
-   UNSUBSCRIBE, READ, and REMOVE operations defined in this section.
+   specification SHOULD support the DISCOVERY, CREATE, PUBLISH,
+   SUBSCRIBE, UNSUBSCRIBE, READ, and REMOVE operations defined in this
+   section.  Optimized implementations MAY support a subset of the
+   operations as required by particular constrained use cases.
 
 4.1.  DISCOVERY
 
@@ -296,18 +298,18 @@ Internet-Draft      Publish-Subscribe Broker for CoAP          July 2017
    Discovery or through a Resource Directory (RD)
    [I-D.ietf-core-resource-directory].  A CoAP pubsub Broker SHOULD
    indicate its presence and availability on a network by exposing a
-   link to its pubsub API at its .well-known/core location [RFC6690].  A
-   CoAP pubsub broker MAY register its pubsub API location with a
-   Resource Directory.  Figure 3 shows an example of a client
-   discovering a local pubsub API using CoAP Simple Discovery.  A broker
-   wishing to advertise the CoAP pubsub API for Simple Discovery or
-   through a Resource Directory MUST use the link relation rt=core.ps.
-   A broker MAY advertise its supported content formats and other
-   attributes in the link to its pubsub API.
+   link to the entry point of its pubsub API at its .well-known/core
+   location [RFC6690].  A CoAP pubsub broker MAY register its pubsub
+   REST API entry point with a Resource Directory.  Figure 3 shows an
+   example of a client discovering a local pubsub API using CoAP Simple
+   Discovery.  A broker wishing to advertise the CoAP pubsub API for
+   Simple Discovery or through a Resource Directory MUST use the link
+   relation rt=core.ps.  A broker MAY advertise its supported content
+   formats and other attributes in the link to its pubsub API.
 
-   A CoAP pubsub Broker MAY offer a topic discovery API to enable
-   Clients to find topics of interest, either by topic name or by link
-   attributes which may be registered when the topic is created.
+   A CoAP pubsub Broker MAY offer a topic discovery entry point to
+   enable Clients to find topics of interest, either by topic name or by
+   link attributes which may be registered when the topic is created.
    Figure 4 shows an example of a client looking for a topic with a
    resource type (rt) of "temperature" using Discover.  The client then
    receives the URI of the resource and its content-format.  A pubsub
@@ -325,9 +327,7 @@ Internet-Draft      Publish-Subscribe Broker for CoAP          July 2017
 
    Method:  GET
 
-   URI Template:  /{+ps}{/topic*}?{q*}
-
-   URI Template Variables:
+   URI Template:  /{+ps}/{+topic}{?q*}
 
 
 
@@ -338,18 +338,14 @@ Koster, et al.           Expires January 4, 2018                [Page 6]
 Internet-Draft      Publish-Subscribe Broker for CoAP          July 2017
 
 
-      ps :=  pubsub API path (optional).  The base URI path of the
-         pubsub API, as obtained from discovery, used to discover
-         topics.
+   URI Template Variables:  ps := pubsub REST API entry point
+      (optional).  The entry point of the pubsub REST API, as obtained
+      from discovery, used to discover topics.
 
+      topic := The desired topic to return links for (optional).
 
-
-      topic :=  The desired topic to return links for (optional).
-
-
-
-      q :=  Query Filter (optional).  MAY contain a query filter list as
-         per [RFC6690] Section 4.1.
+      q := Query Filter (optional).  MAY contain a query filter list as
+      per [RFC6690] Section 4.1.
 
    Content-Format:  application/link-format
 
@@ -379,6 +375,10 @@ Internet-Draft      Publish-Subscribe Broker for CoAP          July 2017
 
 
                Figure 3: Example of DISCOVER pubsub function
+
+
+
+
 
 
 
@@ -420,16 +420,16 @@ Internet-Draft      Publish-Subscribe Broker for CoAP          July 2017
 
 4.2.  CREATE
 
-   Clients create new topics on the broker using CREATE.  A client
-   wishing to create a topic MUST use CoAP POST to the pubsub API with a
-   payload indicating the desired topic.  The topic specification sent
-   in the payload MUST use a supported serialization of the CoRE link
-   format [RFC6690].  The target of the link MUST be a URI formatted
-   string.  The client MUST indicate the desired content format for
-   publishes to the topic by using the ct (Content Format) link
-   attribute in the link-format payload.  The client MAY indicate the
-   lifetime of the topic by including the Max-Age option in the CREATE
-   request.
+   A CoAP pubsub broker MAY allow Clients to create new topics on the
+   broker using CREATE.  A client wishing to create a topic MUST use
+   CoAP POST to the pubsub API with a payload indicating the desired
+   topic.  The topic specification sent in the payload MUST use a
+   supported serialization of the CoRE link format [RFC6690].  The
+   target of the link MUST be a URI formatted string.  The client MUST
+   indicate the desired content format for publishes to the topic by
+   using the ct (Content Format) link attribute in the link-format
+   payload.  The client MAY indicate the lifetime of the topic by
+   including the Max-Age option in the CREATE request.
 
    A Broker MUST return a response code of "2.01 Created" if the topic
    is created and return the URI path of the created topic via Location-
@@ -464,13 +464,16 @@ Internet-Draft      Publish-Subscribe Broker for CoAP          July 2017
 
    Method:  POST
 
-   URI Template:  /{+ps}{/topic*}?{q*}
+   URI Template:  /{+ps}/{+topic}{?q*}
 
-   URI Template Variables:
+   URI Template Variables:  ps := pubsub REST API entry point
+      (optional).  The entry point of the pubsub REST API, as obtained
+      from discovery, used to discover topics.
 
-      ps :=  pubsub API path (mandatory).  The path of the pubsub API,
-         as obtained from discovery.  A pubsub broker SHOULD use the
-         value "ps" for this variable whenever possible.
+      topic := The desired topic to return links for (optional).
+
+      q := Query Filter (optional).  MAY contain a query filter list as
+      per [RFC6690] Section 4.1.
 
    Content-Format:  application/link-format
 
@@ -491,9 +494,6 @@ Internet-Draft      Publish-Subscribe Broker for CoAP          July 2017
 
    Figure 6 shows an example of a topic called "topic1" being
    successfully created.
-
-
-
 
 
 
@@ -536,18 +536,18 @@ Internet-Draft      Publish-Subscribe Broker for CoAP          July 2017
 
 4.3.  PUBLISH
 
-   A CoAP pubsub Client uses the PUBLISH interface for updating topics
-   on the broker.  A client MAY use the PUT or the POST method to
-   publish state updates to the CoAP pubsub Broker.  A client MUST use
-   the content format specified upon creation of a given topic to
-   publish updates to that topic.  The broker MUST reject publish
-   operations which do not use the specified content format.  A CoAP
-   client publishing on a topic MAY indicate the maximum lifetime of the
-   value by including the Max-Age option in the publish request.  The
-   broker MUST return a response code of "2.04 Changed" if the publish
-   is accepted.  A Broker MAY return a "4.04 Not Found" if the topic
-   does not exist.  A broker MAY return "4.29 Too Many Requests" if
-   simple flow control as described in Section 7 is implemented.
+   A CoAP pubsub broker MAY allow clients to PUBLISH to topics on the
+   broker.  A client MAY use the PUT or the POST method to publish state
+   updates to the CoAP pubsub Broker.  A client MUST use the content
+   format specified upon creation of a given topic to publish updates to
+   that topic.  The broker MUST reject publish operations which do not
+   use the specified content format.  A CoAP client publishing on a
+   topic MAY indicate the maximum lifetime of the value by including the
+   Max-Age option in the publish request.  The broker MUST return a
+   response code of "2.04 Changed" if the publish is accepted.  A Broker
+   MAY return a "4.04 Not Found" if the topic does not exist.  A broker
+   MAY return "4.29 Too Many Requests" if simple flow control as
+   described in Section 7 is implemented.
 
    A Broker MUST accept PUBLISH operations using the PUT method.
    PUBLISH operations using the PUT method replace any stored
@@ -577,11 +577,8 @@ Internet-Draft      Publish-Subscribe Broker for CoAP          July 2017
    returned via the Location-Path option.
 
    A Broker MAY accept PUBLISH operations using the POST method.  If a
-   broker accepts PUBLISH using POST it MAY store an ordered list of
-   published representations, with an element of the list for each
-   published representation.  A Broker MAY reject, or delay responses
-   to, POST requests if the internal capacity to store representations
-   is exceeded.
+   broker accepts PUBLISH using POST it shall respond with the 2.04
+   Changed status code.
 
    A Broker MAY perform garbage collection of stored representations
    which have been delivered to all subscribers or which have timed out.
@@ -602,14 +599,17 @@ Internet-Draft      Publish-Subscribe Broker for CoAP          July 2017
 
    Method:  PUT, POST
 
-   URI Template:  /{+ps/}{topic}{/topic*}
+   URI Template:  /{+ps}/{+topic}{?q*}
 
-   URI Template Variables:
+   URI Template Variables:  ps := pubsub REST API entry point
+      (optional).  The entry point of the pubsub REST API, as obtained
+      from discovery, used to discover topics.
 
-      ps :=  pubsub API path (mandatory).  The path of the pubsub API,
-         as obtained from discovery.
+      topic := The desired topic to return links for (optional).
 
-      topic :=  The desired topic to publish on.
+      q := Query Filter (optional).  MAY contain a query filter list as
+      per [RFC6690] Section 4.1.
+
 
 
 
@@ -658,7 +658,7 @@ Internet-Draft      Publish-Subscribe Broker for CoAP          July 2017
             | -------- PUT /ps/exa/mpl/e "1033.3"  -------> |
             |                                               |
             |                                               |
-            | <--------------- 2.04 Created---------------- |
+            | <--------------- 2.01 Created---------------- |
             |             Location: /ps/exa/mpl/e           |
             |                                               |
 
@@ -676,34 +676,34 @@ Internet-Draft      Publish-Subscribe Broker for CoAP          July 2017
 
 4.4.  SUBSCRIBE
 
-   CoAP pubsub Clients subscribe to topics on the Broker using CoAP
-   Observe as described in [RFC7641].  A CoAP pubsub Client wishing to
-   Subscribe to a topic on a broker MUST use a CoAP GET with Observe
-   registration.  The Broker MAY add the client to a list of observers.
-   The Broker MUST return a response code of "2.05 Content" along with
-   the most recently published value if the topic contains a valid value
-   and the broker can supply the requested content format.  The broker
-   MUST reject Subscribe requests on a topic if the content format of
-   the request is not supported by the content format the topic was
-   created with.  The broker MAY accept Subscribe requests which specify
-   content formats that the broker can supply as alternate content
-   formats to the content format the topic was registered with.  If the
-   topic was published with the Max-Age option, the broker MUST set the
-   Max-Age option in the valid response to the amount of time remaining
-   for the value to be valid since the last publish operation on that
-   topic.  The Broker MUST return a response code of "2.04 No Content"
-   if the Max-Age of the previously stored value has expired.  The
-   Broker MUST return a response code "4.04 Not Found" if the topic does
-   not exist or has been removed.  The Broker MUST return a response
-   code "4.15 Unsupported Content Format" if it can not return the
-   requested content format.  If a Broker is unable to accept a new
-   Subscription on a topic, it SHOULD return the appropriate response
-   code without the Observe option as per as per [RFC7641] Section 4.1.
-   There is no explicit maximum lifetime of a Subscription, thus a
-   Broker may remove subscribers at any time.  The Broker, upon removing
-   a Subscriber, will transmit the appropriate response code without the
-   Observe option, as per [RFC7641] Section 4.2, to the removed
-   Subscriber.
+   A CoAP pubsub broker MAY allow Clients to subscribe to topics on the
+   Broker using CoAP Observe as described in [RFC7641].  A CoAP pubsub
+   Client wishing to Subscribe to a topic on a broker MUST use a CoAP
+   GET with the Observe option set to 0 (zero).  The Broker MAY add the
+   client to a list of observers.  The Broker MUST return a response
+   code of "2.05 Content" along with the most recently published value
+   if the topic contains a valid value and the broker can supply the
+   requested content format.  The broker MUST reject Subscribe requests
+   on a topic if the content format of the request is not supported by
+   the content format the topic was created with.  The broker MAY accept
+   Subscribe requests which specify content formats that the broker can
+   supply as alternate content formats to the content format the topic
+   was registered with.  If the topic was published with the Max-Age
+   option, the broker MUST set the Max-Age option in the valid response
+   to the amount of time remaining for the value to be valid since the
+   last publish operation on that topic.  The Broker MUST return a
+   response code of "2.07 No Content" if the Max-Age of the previously
+   stored value has expired.  The Broker MUST return a response code
+   "4.04 Not Found" if the topic does not exist or has been removed.
+   The Broker MUST return a response code "4.15 Unsupported Content
+   Format" if it can not return the requested content format.  If a
+   Broker is unable to accept a new Subscription on a topic, it SHOULD
+   return the appropriate response code without the Observe option as
+   per as per [RFC7641] Section 4.1.  There is no explicit maximum
+   lifetime of a Subscription, thus a Broker may remove subscribers at
+   any time.  The Broker, upon removing a Subscriber, will transmit the
+   appropriate response code without the Observe option, as per
+   [RFC7641] Section 4.2, to the removed Subscriber.
 
    The SUBSCRIBE interface is specified as follows:
 
@@ -713,14 +713,14 @@ Internet-Draft      Publish-Subscribe Broker for CoAP          July 2017
 
    Options:  Observe:0
 
-   URI Template:  /{+ps/}{topic}{/topic*}
+   URI Template:  /{+ps}/{+topic}{?q*}
 
-   URI Template Variables:
+   URI Template Variables:  ps := pubsub REST API entry point
+      (optional).  The entry point of the pubsub REST API, as obtained
+      from discovery, used to discover topics.
 
-      ps :=  pubsub API path (mandatory).  The path of the pubsub API,
-         as obtained from discovery.
+      topic := The desired topic to return links for (optional).
 
-      topic :=  The desired topic to subscribe to.
 
 
 
@@ -730,12 +730,15 @@ Koster, et al.           Expires January 4, 2018               [Page 13]
 Internet-Draft      Publish-Subscribe Broker for CoAP          July 2017
 
 
+      q := Query Filter (optional).  MAY contain a query filter list as
+      per [RFC6690] Section 4.1.
+
    The following response codes are defined for this interface:
 
    Success:  2.05 "Content".  Successful subscribe, current value
       included
 
-   Success:  2.04 "No Content".  Successful subscribe, value not
+   Success:  2.07 "No Content".  Successful subscribe, value not
       included
 
    Failure:  4.00 "Bad Request".  Malformed request.
@@ -771,13 +774,10 @@ Internet-Draft      Publish-Subscribe Broker for CoAP          July 2017
 
 4.5.  UNSUBSCRIBE
 
-   CoAP pubsub Clients unsubscribe from topics on the Broker using the
-   CoAP Cancel Observation operation.  A CoAP pubsub Client wishing to
-   unsubscribe to a topic on a Broker MUST either use CoAP GET with
-   Observe using an Observe parameter of 1 or send a CoAP Reset message
-   in response to a publish, as per [RFC7641].
-
-   The UNSUBSCRIBE interface is specified as follows:
+   If a CoAP pubsub broker allows clients to SUBSCRIBE to topics on the
+   broker, it MUST allow Clients to unsubscribe from topics on the
+   Broker using the CoAP Cancel Observation operation.  A CoAP pubsub
+   Client wishing to unsubscribe to a topic on a Broker MUST either use
 
 
 
@@ -786,27 +786,34 @@ Koster, et al.           Expires January 4, 2018               [Page 14]
 Internet-Draft      Publish-Subscribe Broker for CoAP          July 2017
 
 
+   CoAP GET with Observe using an Observe parameter of 1 or send a CoAP
+   Reset message in response to a publish, as per [RFC7641].
+
+   The UNSUBSCRIBE interface is specified as follows:
+
    Interaction:  Client -> Broker
 
    Method:  GET
 
    Options:  Observe:1
 
-   URI Template:  /{+ps/}{topic}{/topic*}
+   URI Template:  /{+ps}/{+topic}{?q*}
 
-   URI Template Variables:
+   URI Template Variables:  ps := pubsub REST API entry point
+      (optional).  The entry point of the pubsub REST API, as obtained
+      from discovery, used to discover topics.
 
-      ps :=  pubsub API path (mandatory).  The path of the pubsub API,
-         as obtained from discovery.
+      topic := The desired topic to return links for (optional).
 
-      topic :=  The desired topic to unsubscribe from.
+      q := Query Filter (optional).  MAY contain a query filter list as
+      per [RFC6690] Section 4.1.
 
    The following response codes are defined for this interface:
 
    Success:  2.05 "Content".  Successful unsubscribe, current value
       included
 
-   Success:  2.04 "No Content".  Successful unsubscribe, value not
+   Success:  2.07 "No Content".  Successful unsubscribe, value not
       included
 
    Failure:  4.00 "Bad Request".  Malformed request.
@@ -828,13 +835,6 @@ Internet-Draft      Publish-Subscribe Broker for CoAP          July 2017
 
                      Figure 11: Example of UNSUBSCRIBE
 
-4.6.  READ
-
-   A CoAP pubsub client wishing to obtain only the most recent published
-   value on a topic MAY use the READ interface.  For reading, the client
-   uses the CoAP GET method.  The broker MUST accept Read requests on a
-   topic if the content format of the request matches the content format
-
 
 
 Koster, et al.           Expires January 4, 2018               [Page 15]
@@ -842,20 +842,25 @@ Koster, et al.           Expires January 4, 2018               [Page 15]
 Internet-Draft      Publish-Subscribe Broker for CoAP          July 2017
 
 
-   the topic was created with.  The broker MAY accept Read requests
-   which specify content formats that the broker can supply as alternate
-   content formats to the content format the topic was registered with.
-   The Broker MUST return a response code of "2.05 Content" along with
-   the most recently published value if the topic contains a valid value
-   and the broker can supply the requested content format.  If the topic
-   was published with the Max-Age option, the broker MUST set the Max-
-   Age option in the valid response to the amount of time remaining for
-   the topic to be valid since the last publish.  The Broker MUST return
-   a response code of "2.04 No Content" if the Max-Age of the previously
-   stored value has expired.  The Broker MUST return a response code
-   "4.04 Not Found" if the topic does not exist or has been removed.
-   The Broker MUST return a response code "4.15 Unsupported Content
-   Format" if the broker can not return the requested content format.
+4.6.  READ
+
+   A CoAP pubsub broker MAY accept Read requests on a topic using the
+   the CoAP GET method if the content format of the request matches the
+   content format the topic was created with.  The broker MAY accept
+   Read requests which specify content formats that the broker can
+   supply as alternate content formats to the content format the topic
+   was registered with.  The Broker MUST return a response code of "2.05
+   Content" along with the most recently published value if the topic
+   contains a valid value and the broker can supply the requested
+   content format.  If the topic was published with the Max-Age option,
+   the broker MUST set the Max-Age option in the valid response to the
+   amount of time remaining for the topic to be valid since the last
+   publish.  The Broker MUST return a response code of "2.07 No Content"
+   if the Max-Age of the previously stored value has expired.  The
+   Broker MUST return a response code "4.04 Not Found" if the topic does
+   not exist or has been removed.  The Broker MUST return a response
+   code "4.15 Unsupported Content Format" if the broker can not return
+   the requested content format.
 
    The READ interface is specified as follows:
 
@@ -863,20 +868,22 @@ Internet-Draft      Publish-Subscribe Broker for CoAP          July 2017
 
    Method:  GET
 
-   URI Template:  /{+ps/}{topic}{/topic*}
+   URI Template:  /{+ps}/{+topic}{?q*}
 
-   URI Template Variables:
+   URI Template Variables:  ps := pubsub REST API entry point
+      (optional).  The entry point of the pubsub REST API, as obtained
+      from discovery, used to discover topics.
 
-      ps :=  pubsub API path (mandatory).  The path of the pubsub API,
-         as obtained from discovery.
+      topic := The desired topic to return links for (optional).
 
-      topic :=  The desired topic to READ.
+      q := Query Filter (optional).  MAY contain a query filter list as
+      per [RFC6690] Section 4.1.
 
    The following response codes are defined for this interface:
 
    Success:  2.05 "Content".  Successful READ, current value included
 
-   Success:  2.04 "No Content".  Topic exists, value not included
+   Success:  2.07 "No Content".  Topic exists, value not included
 
    Failure:  4.00 "Bad Request".  Malformed request.
 
@@ -884,19 +891,19 @@ Internet-Draft      Publish-Subscribe Broker for CoAP          July 2017
 
    Failure:  4.04 "Not Found".  Topic does not exist.
 
-   Failure:  4.15 "Unsupported Content Format".  Unsupported content-
-      format.
-
-   Figure 12 shows an example of a successful READ from topic1, followed
-   by a Publish on the topic, followed at some time later by a read of
-   the updated value from the recent Publish.
-
 
 
 Koster, et al.           Expires January 4, 2018               [Page 16]
 
 Internet-Draft      Publish-Subscribe Broker for CoAP          July 2017
 
+
+   Failure:  4.15 "Unsupported Content Format".  Unsupported content-
+      format.
+
+   Figure 12 shows an example of a successful READ from topic1, followed
+   by a Publish on the topic, followed at some time later by a read of
+   the updated value from the recent Publish.
 
      Client1   Client2                                          Broker
        |          |                     Read                      |
@@ -920,16 +927,16 @@ Internet-Draft      Publish-Subscribe Broker for CoAP          July 2017
 
 4.7.  REMOVE
 
-   A CoAP pubsub Client wishing to remove a topic MAY use the CoAP
-   Delete operation on the URI of the topic.  The CoAP pubsub Broker
-   MUST return "2.02 Deleted" if the remove operation is successful.
-   The broker MUST return the appropriate 4.xx response code indicating
-   the reason for failure if the topic can not be removed.  When a topic
-   is removed for any reason, the Broker SHOULD return the response code
-   4.04 Not Found and remove all of the observers from the list of
-   observers as per as per [RFC7641] Section 3.2.  If a topic which has
-   sub-topics is removed, then all of its sub-topics MUST be recursively
-   removed.
+   A CoAP pubsub broker MAY allow clientsremove a topics from the broker
+   using the CoAP Delete method on the URI of the topic.  The CoAP
+   pubsub Broker MUST return "2.02 Deleted" if the removal is
+   successful.  The broker MUST return the appropriate 4.xx response
+   code indicating the reason for failure if the topic can not be
+   removed.  When a topic is removed for any reason, the Broker SHOULD
+   return the response code 4.04 Not Found and remove all of the
+   observers from the list of observers as per as per [RFC7641]
+   Section 3.2.  If a topic which has sub-topics is removed, then all of
+   its sub-topics MUST be recursively removed.
 
    The REMOVE interface is specified as follows:
 
@@ -937,14 +944,7 @@ Internet-Draft      Publish-Subscribe Broker for CoAP          July 2017
 
    Method:  DELETE
 
-   URI Template:  /{+ps/}{topic}{/topic*}
-
-   URI Template Variables:
-
-      ps :=  pubsub API path (mandatory).  The path of the pubsub API,
-         as obtained from discovery.
-
-      topic :=  The desired topic to REMOVE.
+   URI Template:  /{+ps}/{+topic}{?q*}
 
 
 
@@ -953,6 +953,15 @@ Koster, et al.           Expires January 4, 2018               [Page 17]
 
 Internet-Draft      Publish-Subscribe Broker for CoAP          July 2017
 
+
+   URI Template Variables:  ps := pubsub REST API entry point
+      (optional).  The entry point of the pubsub REST API, as obtained
+      from discovery, used to discover topics.
+
+      topic := The desired topic to return links for (optional).
+
+      q := Query Filter (optional).  MAY contain a query filter list as
+      per [RFC6690] Section 4.1.
 
    Content-Format:  None
 
@@ -983,9 +992,9 @@ Internet-Draft      Publish-Subscribe Broker for CoAP          July 2017
 
 5.  CoAP pubsub Operation with Resource Directory
 
-   A CoAP pubsub Broker may register the base URI of a pubsub API with a
-   Resource Directory.  A pubsub Client may use an RD to discover a
-   pubsub Broker.
+   A CoAP pubsub Broker may register the base URI, which is the REST API
+   entry point for a pubsub service, with a Resource Directory.  A
+   pubsub Client may use an RD to discover a pubsub Broker.
 
    A CoAP pubsub Client may register links [RFC6690] with a Resource
    Directory to enable discovery of created pubsub topics.  A pubsub
@@ -993,6 +1002,13 @@ Internet-Draft      Publish-Subscribe Broker for CoAP          July 2017
    registers pubsub Topics with an RD MUST use the context relation
    (con) [I-D.ietf-core-resource-directory] to indicate that the context
    of the registered links is the pubsub Broker.
+
+
+
+Koster, et al.           Expires January 4, 2018               [Page 18]
+
+Internet-Draft      Publish-Subscribe Broker for CoAP          July 2017
+
 
    A CoAP pubsub Broker may alternatively register links to its topics
    to a Resource Directory by triggering the RD to retrieve it's links
@@ -1002,14 +1018,6 @@ Internet-Draft      Publish-Subscribe Broker for CoAP          July 2017
 
    The pubsub broker triggers the RD to retrieve its links by sending a
    POST with an empty payload to the .well-known/core of the Resource
-
-
-
-Koster, et al.           Expires January 4, 2018               [Page 18]
-
-Internet-Draft      Publish-Subscribe Broker for CoAP          July 2017
-
-
    Directory.  The RD server will then retrieve the links from the
    .well-known/core of the pubsub broker and incorporate them into the
    Resource Directory.  See [I-D.ietf-core-resource-directory] for
@@ -1050,14 +1058,6 @@ Internet-Draft      Publish-Subscribe Broker for CoAP          July 2017
 
    If a client receives the 4.29 Response Code from the broker for a
    publish message to a topic, it MUST NOT send new publish messages to
-   the broker on the same topic before the time indicated in Max-Age has
-   passed.
-
-8.  Security Considerations
-
-   CoAP pubsub re-uses CoAP [RFC7252], CoRE Resource Directory
-   [I-D.ietf-core-resource-directory], and Web Linking [RFC5988] and
-   therefore the security considerations of those documents also apply
 
 
 
@@ -1066,6 +1066,14 @@ Koster, et al.           Expires January 4, 2018               [Page 19]
 Internet-Draft      Publish-Subscribe Broker for CoAP          July 2017
 
 
+   the broker on the same topic before the time indicated in Max-Age has
+   passed.
+
+8.  Security Considerations
+
+   CoAP pubsub re-uses CoAP [RFC7252], CoRE Resource Directory
+   [I-D.ietf-core-resource-directory], and Web Linking [RFC5988] and
+   therefore the security considerations of those documents also apply
    to this specification.  Additionally, a CoAP pubsub broker and the
    clients SHOULD authenticate each other and enforce access control
    policies.  A malicious client could subscribe to data it is not
@@ -1101,19 +1109,11 @@ Internet-Draft      Publish-Subscribe Broker for CoAP          July 2017
 
    Depending on the level of trust users and system designers place in
    the CoAP pubsub broker, the use of end-to-end object security is
-   RECOMMENDED [I-D.ietf-core-object-security].
+   RECOMMENDED as described in [I-D.palombini-ace-coap-pubsub-profile].
 
    When only end-to-end encryption is necessary and the CoAP Broker is
    trusted, Payload Only Protection (Mode:PAYL) could be used.  The
    Publisher would wrap only the payload before sending it to the broker
-   and set the option Content-Format to application/smpayl.  Upon
-   receival, the Broker can read the unencrypted CoAP header to forward
-   it to the subscribers.
-
-
-
-
-
 
 
 
@@ -1121,6 +1121,10 @@ Koster, et al.           Expires January 4, 2018               [Page 20]
 
 Internet-Draft      Publish-Subscribe Broker for CoAP          July 2017
 
+
+   and set the option Content-Format to application/smpayl.  Upon
+   receival, the Broker can read the unencrypted CoAP header to forward
+   it to the subscribers.
 
 9.  IANA Considerations
 
@@ -1148,16 +1152,31 @@ Internet-Draft      Publish-Subscribe Broker for CoAP          July 2017
 
    o  Notes: None
 
-9.3.  Response Code value '2.04'
+9.3.  Response Code value '2.07'
 
-   o  Response Code: 2.04
+   o  Response Code: 2.07
 
    o  Description: Add No Content response to GET to the existing
-      definition of the 2.04 response code.
+      definition of the 2.07 response code.
 
    o  Reference: [[This document]]
 
-   o  Notes: None
+   o  Notes: The server sends this code to the client to indicate that
+      the request was valid and accepted, but the responce may contain
+      an empty payload.  It is comparable to and may be proxied with the
+      http 204 No Content status code.
+
+
+
+
+
+
+
+
+Koster, et al.           Expires January 4, 2018               [Page 21]
+
+Internet-Draft      Publish-Subscribe Broker for CoAP          July 2017
+
 
 9.4.  Response Code value '4.29'
 
@@ -1170,14 +1189,6 @@ Internet-Draft      Publish-Subscribe Broker for CoAP          July 2017
 
    o  Notes: None
 
-
-
-
-Koster, et al.           Expires January 4, 2018               [Page 21]
-
-Internet-Draft      Publish-Subscribe Broker for CoAP          July 2017
-
-
 10.  Acknowledgements
 
    The authors would like to thank Hannes Tschofenig, Zach Shelby, Mohit
@@ -1188,16 +1199,6 @@ Internet-Draft      Publish-Subscribe Broker for CoAP          July 2017
 11.  References
 
 11.1.  Normative References
-
-   [I-D.ietf-core-object-security]
-              Selander, G., Mattsson, J., Palombini, F., and L. Seitz,
-              "Object Security of CoAP (OSCOAP)", draft-ietf-core-
-              object-security-04 (work in progress), July 2017.
-
-   [I-D.ietf-core-resource-directory]
-              Shelby, Z., Koster, M., Bormann, C., and P. Stok, "CoRE
-              Resource Directory", draft-ietf-core-resource-directory-10
-              (work in progress), March 2017.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -1228,7 +1229,6 @@ Internet-Draft      Publish-Subscribe Broker for CoAP          July 2017
 
 
 
-
 Koster, et al.           Expires January 4, 2018               [Page 22]
 
 Internet-Draft      Publish-Subscribe Broker for CoAP          July 2017
@@ -1240,6 +1240,22 @@ Internet-Draft      Publish-Subscribe Broker for CoAP          July 2017
               <http://www.rfc-editor.org/info/rfc7641>.
 
 11.2.  Informative References
+
+   [I-D.ietf-core-resource-directory]
+              Shelby, Z., Koster, M., Bormann, C., and P. Stok, "CoRE
+              Resource Directory", draft-ietf-core-resource-directory-10
+              (work in progress), March 2017.
+
+   [I-D.palombini-ace-coap-pubsub-profile]
+              Palombini, F., "CoAP Pub-Sub Profile for Authentication
+              and Authorization for Constrained Environments (ACE)",
+              draft-palombini-ace-coap-pubsub-profile-00 (work in
+              progress), March 2017.
+
+   [I-D.selander-ace-object-security]
+              Selander, G., Mattsson, J., Palombini, F., and L. Seitz,
+              "Object Security of CoAP (OSCOAP)", draft-selander-ace-
+              object-security-06 (work in progress), October 2016.
 
    [RFC5988]  Nottingham, M., "Web Linking", RFC 5988,
               DOI 10.17487/RFC5988, October 2010,
@@ -1263,22 +1279,6 @@ Authors' Addresses
    Ericsson
 
    Email: jaime.jimenez@ericsson.com
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
