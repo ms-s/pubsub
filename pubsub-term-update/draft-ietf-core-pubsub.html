@@ -279,12 +279,12 @@ address {
 <link href="#rfc.section.1" rel="Chapter" title="1 Introduction">
 <link href="#rfc.section.2" rel="Chapter" title="2 Terminology">
 <link href="#rfc.section.3" rel="Chapter" title="3 Architecture">
-<link href="#rfc.section.3.1" rel="Chapter" title="3.1 CoAP pubsub Architecture">
-<link href="#rfc.section.3.2" rel="Chapter" title="3.2 CoAP pubsub Broker">
-<link href="#rfc.section.3.3" rel="Chapter" title="3.3 CoAP pubsub Client">
-<link href="#rfc.section.3.4" rel="Chapter" title="3.4 CoAP pubsub Topic">
-<link href="#rfc.section.3.5" rel="Chapter" title="3.5 Brokerless pubsub">
-<link href="#rfc.section.4" rel="Chapter" title="4 CoAP pubsub REST API">
+<link href="#rfc.section.3.1" rel="Chapter" title="3.1 CoAP Pub/sub Architecture">
+<link href="#rfc.section.3.2" rel="Chapter" title="3.2 CoAP Pub/sub Broker">
+<link href="#rfc.section.3.3" rel="Chapter" title="3.3 CoAP Pub/sub Client">
+<link href="#rfc.section.3.4" rel="Chapter" title="3.4 CoAP Pub/sub Topic">
+<link href="#rfc.section.3.5" rel="Chapter" title="3.5 Brokerless Pub/sub">
+<link href="#rfc.section.4" rel="Chapter" title="4 CoAP Pub/sub REST API">
 <link href="#rfc.section.4.1" rel="Chapter" title="4.1 DISCOVERY">
 <link href="#rfc.section.4.2" rel="Chapter" title="4.2 CREATE">
 <link href="#rfc.section.4.3" rel="Chapter" title="4.3 PUBLISH">
@@ -292,7 +292,7 @@ address {
 <link href="#rfc.section.4.5" rel="Chapter" title="4.5 UNSUBSCRIBE">
 <link href="#rfc.section.4.6" rel="Chapter" title="4.6 READ">
 <link href="#rfc.section.4.7" rel="Chapter" title="4.7 REMOVE">
-<link href="#rfc.section.5" rel="Chapter" title="5 CoAP pubsub Operation with Resource Directory">
+<link href="#rfc.section.5" rel="Chapter" title="5 CoAP Pub/sub Operation with Resource Directory">
 <link href="#rfc.section.6" rel="Chapter" title="6 Sleep-Wake Operation">
 <link href="#rfc.section.7" rel="Chapter" title="7 Simple Flow Control">
 <link href="#rfc.section.8" rel="Chapter" title="8 Security Considerations">
@@ -378,17 +378,17 @@ address {
 </li>
 <li>3.   <a href="#rfc.section.3">Architecture</a>
 </li>
-<ul><li>3.1.   <a href="#rfc.section.3.1">CoAP pubsub Architecture</a>
+<ul><li>3.1.   <a href="#rfc.section.3.1">CoAP Pub/sub Architecture</a>
 </li>
-<li>3.2.   <a href="#rfc.section.3.2">CoAP pubsub Broker</a>
+<li>3.2.   <a href="#rfc.section.3.2">CoAP Pub/sub Broker</a>
 </li>
-<li>3.3.   <a href="#rfc.section.3.3">CoAP pubsub Client</a>
+<li>3.3.   <a href="#rfc.section.3.3">CoAP Pub/sub Client</a>
 </li>
-<li>3.4.   <a href="#rfc.section.3.4">CoAP pubsub Topic</a>
+<li>3.4.   <a href="#rfc.section.3.4">CoAP Pub/sub Topic</a>
 </li>
-<li>3.5.   <a href="#rfc.section.3.5">Brokerless pubsub</a>
+<li>3.5.   <a href="#rfc.section.3.5">Brokerless Pub/sub</a>
 </li>
-</ul><li>4.   <a href="#rfc.section.4">CoAP pubsub REST API</a>
+</ul><li>4.   <a href="#rfc.section.4">CoAP Pub/sub REST API</a>
 </li>
 <ul><li>4.1.   <a href="#rfc.section.4.1">DISCOVERY</a>
 </li>
@@ -404,7 +404,7 @@ address {
 </li>
 <li>4.7.   <a href="#rfc.section.4.7">REMOVE</a>
 </li>
-</ul><li>5.   <a href="#rfc.section.5">CoAP pubsub Operation with Resource Directory</a>
+</ul><li>5.   <a href="#rfc.section.5">CoAP Pub/sub Operation with Resource Directory</a>
 </li>
 <li>6.   <a href="#rfc.section.6">Sleep-Wake Operation</a>
 </li>
@@ -451,13 +451,13 @@ address {
 <p></p>
 
 <dl>
-<dt>Publish-Subscribe (pubsub):</dt>
+<dt>Publish-Subscribe (pub/sub):</dt>
 <dd style="margin-left: 8">A messaging paradigm where messages are published to a broker and potential receivers can subscribe to the broker to receive messages. The publishers do not (need to) know where the message will be eventually sent: the publications and subscriptions are matched by a broker and publications are delivered by the broker to subscribed receivers.</dd>
-<dt>CoAP pubsub service:</dt>
+<dt>CoAP pub/sub service:</dt>
 <dd style="margin-left: 8">A group of REST resources, as defined in this document, which together implement the required features of this specification.</dd>
-<dt>CoAP pubsub Broker:</dt>
+<dt>CoAP pub/sub Broker:</dt>
 <dd style="margin-left: 8">A server node capable of receiving messages (publications) from and sending messages to other nodes, and able to match subscriptions and publications in order to route messages to the right destinations. The broker can also temporarily store publications to satisfy future subscriptions and pending notifications.</dd>
-<dt>CoAP pubsub Client:</dt>
+<dt>CoAP pub/sub Client:</dt>
 <dd style="margin-left: 8">A CoAP client which is capable of publish or subscribe operations as defined in this specification.</dd>
 <dt>Topic:</dt>
 <dd style="margin-left: 8">A unique identifier for a particular item being published and/or subscribed to. A broker uses the topics to match subscriptions to publications. A topic is a valid CoAP URI as defined in <a href="#RFC7252" class="xref">[RFC7252]</a>
@@ -467,69 +467,69 @@ address {
 <a href="#rfc.section.3">3.</a> <a href="#architecture" id="architecture">Architecture</a>
 </h1>
 <h1 id="rfc.section.3.1">
-<a href="#rfc.section.3.1">3.1.</a> <a href="#coap-pubsub-architecture" id="coap-pubsub-architecture">CoAP pubsub Architecture</a>
+<a href="#rfc.section.3.1">3.1.</a> <a href="#coap-pubsub-architecture" id="coap-pubsub-architecture">CoAP Pub/sub Architecture</a>
 </h1>
-<p><a href="#arch-fig" class="xref">Figure 1</a> shows the architecture of a CoAP pubsub service. CoAP pubsub Clients interact with a CoAP pubsub Broker through the CoAP pubsub REST API which is hosted by the Broker. State information is updated between the Clients and the Broker.  The CoAP pubsub Broker performs a store-and-forward of state update representations between certain CoAP pubsub Clients. Clients Subscribe to topics upon which representations are Published by other Clients, which are forwarded by the Broker to the subscribing clients. A CoAP pubsub Broker may be used as a REST resource proxy, retaining the last published representation to supply in response to Read requests from Clients.</p>
+<p><a href="#arch-fig" class="xref">Figure 1</a> shows the architecture of a CoAP pub/sub service. CoAP pub/sub Clients interact with a CoAP pub/sub Broker through the CoAP pub/sub REST API which is hosted by the Broker. State information is updated between the Clients and the Broker.  The CoAP pub/sub Broker performs a store-and-forward of state update representations between certain CoAP pub/sub Clients. Clients Subscribe to topics upon which representations are Published by other Clients, which are forwarded by the Broker to the subscribing clients. A CoAP pub/sub Broker may be used as a REST resource proxy, retaining the last published representation to supply in response to Read requests from Clients.</p>
 <div id="rfc.figure.1"></div>
 <div id="arch-fig"></div>
 <pre>
-Clients        pubsub         Broker
+Clients        pub/sub         Broker
 +-------+         |
 | CoAP  |         |
-|pubsub |---------|------+
+|pub/sub|---------|------+
 |Client |         |      |    +-------+
 +-------+         |      +----| CoAP  |
-                  |           |pubsub |
+                  |           |pub/sub|
 +-------+         |      +----|Broker |
 | CoAP  |         |      |    +-------+
-|pubsub |---------|------+
+|pub/sub|---------|------+
 |Client |         |
 +-------+         |
 
 </pre>
-<p class="figure">Figure 1: CoAP pubsub Architecture</p>
+<p class="figure">Figure 1: CoAP pub/sub Architecture</p>
 <h1 id="rfc.section.3.2">
-<a href="#rfc.section.3.2">3.2.</a> <a href="#coap-pubsub-broker" id="coap-pubsub-broker">CoAP pubsub Broker</a>
+<a href="#rfc.section.3.2">3.2.</a> <a href="#coap-pubsub-broker" id="coap-pubsub-broker">CoAP Pub/sub Broker</a>
 </h1>
-<p id="rfc.section.3.2.p.1">A CoAP pubsub Broker is a CoAP Server that exposes a REST API for clients to use to initiate publish-subscribe interactions. Avoiding the need for direct reachability between clients, the broker only needs to be reachable from all clients. The broker also needs to have sufficient resources (storage, bandwidth, etc.) to host CoAP resource services, and potentially buffer messages, on behalf of the clients.</p>
+<p id="rfc.section.3.2.p.1">A CoAP pub/sub Broker is a CoAP Server that exposes a REST API for clients to use to initiate publish-subscribe interactions. Avoiding the need for direct reachability between clients, the broker only needs to be reachable from all clients. The broker also needs to have sufficient resources (storage, bandwidth, etc.) to host CoAP resource services, and potentially buffer messages, on behalf of the clients.</p>
 <h1 id="rfc.section.3.3">
-<a href="#rfc.section.3.3">3.3.</a> <a href="#coap-pubsub-client" id="coap-pubsub-client">CoAP pubsub Client</a>
+<a href="#rfc.section.3.3">3.3.</a> <a href="#coap-pubsub-client" id="coap-pubsub-client">CoAP Pub/sub Client</a>
 </h1>
-<p id="rfc.section.3.3.p.1">A CoAP pubsub Client interacts with a CoAP pubsub Broker using the CoAP pubsub REST API defined in this document. Clients initiate interactions with a CoAP pubsub broker. A data source (e.g., sensor clients) can publish state updates to the broker and data sinks (e.g., actuator clients) can read from or subscribe to state updates from the broker. Application clients can make use of both publish and subscribe in order to exchange state updates with data sources and data sinks.</p>
+<p id="rfc.section.3.3.p.1">A CoAP pub/sub Client interacts with a CoAP pub/sub Broker using the CoAP pub/sub REST API defined in this document. Clients initiate interactions with a CoAP pub/sub broker. A data source (e.g., sensor clients) can publish state updates to the broker and data sinks (e.g., actuator clients) can read from or subscribe to state updates from the broker. Application clients can make use of both publish and subscribe in order to exchange state updates with data sources and data sinks.</p>
 <h1 id="rfc.section.3.4">
-<a href="#rfc.section.3.4">3.4.</a> <a href="#coap-pubsub-topic" id="coap-pubsub-topic">CoAP pubsub Topic</a>
+<a href="#rfc.section.3.4">3.4.</a> <a href="#coap-pubsub-topic" id="coap-pubsub-topic">CoAP Pub/sub Topic</a>
 </h1>
-<p id="rfc.section.3.4.p.1">The clients and broker use topics to identify a particular resource or object in a publish-subscribe system. Topics are conventionally formed as a hierarchy, e.g. &#8220;/sensors/weather/barometer/pressure&#8221; or &#8220;EP-33543/sen/3303/0/5700&#8221;.  The topics are hosted at the broker and all the clients using the broker share the same namespace for topics. Every CoAP pubsub topic has a link, consisting of a reference path on the broker using URI path <a href="#RFC3986" class="xref">[RFC3986]</a> construction and link attributes <a href="#RFC6690" class="xref">[RFC6690]</a>. Every topic is associated with zero or more stored representations with a content-format specified in the link. A CoAP pubsub topic value may alternatively be a collection of one or more sub-topics, consisting of links to the sub-topic URIs and indicated by a link-format content-format.</p>
+<p id="rfc.section.3.4.p.1">The clients and broker use topics to identify a particular resource or object in a publish-subscribe system. Topics are conventionally formed as a hierarchy, e.g. &#8220;/sensors/weather/barometer/pressure&#8221; or &#8220;EP-33543/sen/3303/0/5700&#8221;.  The topics are hosted at the broker and all the clients using the broker share the same namespace for topics. Every CoAP pub/sub topic has a link, consisting of a reference path on the broker using URI path <a href="#RFC3986" class="xref">[RFC3986]</a> construction and link attributes <a href="#RFC6690" class="xref">[RFC6690]</a>. Every topic is associated with zero or more stored representations with a content-format specified in the link. A CoAP pub/sub topic value may alternatively be a collection of one or more sub-topics, consisting of links to the sub-topic URIs and indicated by a link-format content-format.</p>
 <h1 id="rfc.section.3.5">
-<a href="#rfc.section.3.5">3.5.</a> <a href="#brokerless-pubsub" id="brokerless-pubsub">Brokerless pubsub</a>
+<a href="#rfc.section.3.5">3.5.</a> <a href="#brokerless-pubsub" id="brokerless-pubsub">Brokerless Pub/sub</a>
 </h1>
-<p><a href="#brokerless" class="xref">Figure 2</a> shows an arrangement for using CoAP pubsub in a &#8220;brokerless&#8221; configuration between peer nodes. Nodes in a brokerless system may act as both broker and client. The Broker interface in a brokerless node may be pre-configured with topics that expose services and resources. Brokerless peer nodes can be mixed with client and broker nodes in a system with full interoperability.</p>
+<p><a href="#brokerless" class="xref">Figure 2</a> shows an arrangement for using CoAP pub/sub in a &#8220;brokerless&#8221; configuration between peer nodes. Nodes in a brokerless system may act as both broker and client. The Broker interface in a brokerless node may be pre-configured with topics that expose services and resources. Brokerless peer nodes can be mixed with client and broker nodes in a system with full interoperability.</p>
 <div id="rfc.figure.2"></div>
 <div id="brokerless"></div>
 <pre>
-  Peer         pubsub          Peer
+  Peer         pub/sub          Peer
 +-------+         |         +-------+
 | CoAP  |         |         | CoAP  |
-|pubsub |---------|---------|pubsub |
+|pub/sub|---------|---------|pub/sub|
 |Client |         |         |Broker |
 +-------+         |         +-------+
 | CoAP  |         |         | CoAP  |
-|pubsub |---------|---------|pubsub |
+|pub/sub|---------|---------|pub/sub|
 |Broker |         |         |Client |
 +-------+         |         +-------+
 
 </pre>
-<p class="figure">Figure 2: Brokerless pubsub</p>
+<p class="figure">Figure 2: Brokerless pub/sub</p>
 <h1 id="rfc.section.4">
-<a href="#rfc.section.4">4.</a> <a href="#function-set" id="function-set">CoAP pubsub REST API</a>
+<a href="#rfc.section.4">4.</a> <a href="#function-set" id="function-set">CoAP Pub/sub REST API</a>
 </h1>
-<p id="rfc.section.4.p.1">This section defines the REST API exposed by a CoAP pubsub Broker to pubsub Clients.  The examples throughout this section assume the use of CoAP <a href="#RFC7252" class="xref">[RFC7252]</a>. A CoAP pubsub Broker implementing this specification SHOULD support the DISCOVERY, CREATE, PUBLISH, SUBSCRIBE, UNSUBSCRIBE, READ, and REMOVE operations defined in this section. Optimized implementations MAY support a subset of the operations as required by particular constrained use cases.</p>
+<p id="rfc.section.4.p.1">This section defines the REST API exposed by a CoAP pub/sub Broker to pub/sub Clients.  The examples throughout this section assume the use of CoAP <a href="#RFC7252" class="xref">[RFC7252]</a>. A CoAP pub/sub Broker implementing this specification SHOULD support the DISCOVERY, CREATE, PUBLISH, SUBSCRIBE, UNSUBSCRIBE, READ, and REMOVE operations defined in this section. Optimized implementations MAY support a subset of the operations as required by particular constrained use cases.</p>
 <h1 id="rfc.section.4.1">
 <a href="#rfc.section.4.1">4.1.</a> <a href="#discover" id="discover">DISCOVERY</a>
 </h1>
-<p id="rfc.section.4.1.p.1">CoAP pubsub Clients discover CoAP pubsub Brokers by using CoAP Simple Discovery or through a Resource Directory (RD) <a href="#I-D.ietf-core-resource-directory" class="xref">[I-D.ietf-core-resource-directory]</a>. A CoAP pubsub Broker SHOULD indicate its presence and availability on a network by exposing a link to the entry point of its pubsub API at its .well-known/core location <a href="#RFC6690" class="xref">[RFC6690]</a>. A CoAP pubsub broker MAY register its pubsub REST API entry point with a Resource Directory. <a href="#discover-fig" class="xref">Figure 3</a> shows an example of a client discovering a local pubsub API using CoAP Simple Discovery. A broker wishing to advertise the CoAP pubsub API for Simple Discovery or through a Resource Directory MUST use the link relation rt=core.ps. A broker MAY advertise its supported content formats and other attributes in the link to its pubsub API.</p>
-<p id="rfc.section.4.1.p.2">A CoAP pubsub Broker MAY offer a topic discovery entry point to enable Clients to find topics of interest, either by topic name or by link attributes which may be registered when the topic is created. <a href="#discover-topic-fig" class="xref">Figure 4</a> shows an example of a client looking for a topic with a resource type (rt) of &#8220;temperature&#8221; using Discover. The client then receives the URI of the resource and its content-format. A pubsub broker wishing to advertize topic discovery MUST use the relation rt=core.ps.discover in the link.</p>
-<p id="rfc.section.4.1.p.3">A CoAP pubsub Broker MAY expose the Discover interface through the .well-known/core resource. Links to topics may be exposed at .well-known/core in addition to links to the pubsub API. <a href="#discover-topic-wk-fig" class="xref">Figure 5</a> shows an example of topic discovery through .well-known/core.</p>
+<p id="rfc.section.4.1.p.1">CoAP pub/sub Clients discover CoAP pub/sub Brokers by using CoAP Simple Discovery or through a Resource Directory (RD) <a href="#I-D.ietf-core-resource-directory" class="xref">[I-D.ietf-core-resource-directory]</a>. A CoAP pub/sub Broker SHOULD indicate its presence and availability on a network by exposing a link to the entry point of its pub/sub API at its .well-known/core location <a href="#RFC6690" class="xref">[RFC6690]</a>. A CoAP pub/sub broker MAY register its pub/sub REST API entry point with a Resource Directory. <a href="#discover-fig" class="xref">Figure 3</a> shows an example of a client discovering a local pub/sub API using CoAP Simple Discovery. A broker wishing to advertise the CoAP pub/sub API for Simple Discovery or through a Resource Directory MUST use the link relation rt=core.ps. A broker MAY advertise its supported content formats and other attributes in the link to its pub/sub API.</p>
+<p id="rfc.section.4.1.p.2">A CoAP pub/sub Broker MAY offer a topic discovery entry point to enable Clients to find topics of interest, either by topic name or by link attributes which may be registered when the topic is created. <a href="#discover-topic-fig" class="xref">Figure 4</a> shows an example of a client looking for a topic with a resource type (rt) of &#8220;temperature&#8221; using Discover. The client then receives the URI of the resource and its content-format. A pub/sub broker wishing to advertize topic discovery MUST use the relation rt=core.ps.discover in the link.</p>
+<p id="rfc.section.4.1.p.3">A CoAP pub/sub Broker MAY expose the Discover interface through the .well-known/core resource. Links to topics may be exposed at .well-known/core in addition to links to the pub/sub API. <a href="#discover-topic-wk-fig" class="xref">Figure 5</a> shows an example of topic discovery through .well-known/core.</p>
 <p id="rfc.section.4.1.p.4">The DISCOVER interface is specified as follows:</p>
 <p></p>
 
@@ -539,9 +539,9 @@ Clients        pubsub         Broker
 <dt>Method:</dt>
 <dd style="margin-left: 8">GET</dd>
 <dt>URI Template:</dt>
-<dd style="margin-left: 8">/{+ps}/{+topic}{?q*}</dd>
+<dd style="margin-left: 8">{+ps}/{+topic}{?q*}</dd>
 <dt>URI Template Variables:</dt>
-<dd style="margin-left: 8">ps := pubsub REST API entry point (optional). The entry point of the pubsub REST API, as obtained from discovery, used to discover topics.</dd>
+<dd style="margin-left: 8">ps := Pub/sub REST API entry point (optional). The entry point of the pub/sub REST API, as obtained from discovery, used to discover topics.</dd>
 <dt></dt>
 <dd style="margin-left: 8">topic := The desired topic to return links for (optional).</dd>
 <dt></dt>
@@ -554,7 +554,7 @@ Clients        pubsub         Broker
 
 <dl>
 <dt>Success:</dt>
-<dd style="margin-left: 8">2.05 &#8220;Content&#8221; with an application/link-format payload containing one or more matching entries for the broker resource. A pubsub broker SHOULD use the value &#8220;/ps/&#8221; for the base URI of the pubsub API wherever possible.</dd>
+<dd style="margin-left: 8">2.05 &#8220;Content&#8221; with an application/link-format payload containing one or more matching entries for the broker resource. A pub/sub broker SHOULD use the value &#8220;/ps/&#8221; for the base URI of the pub/sub API wherever possible.</dd>
 <dt>Failure:</dt>
 <dd style="margin-left: 8">4.04 &#8220;Not Found&#8221; is returned in case no matching entry is found for a unicast request.</dd>
 <dt>Failure:</dt>
@@ -575,7 +575,7 @@ Client                                          Broker
   |                                               |
 
 </pre>
-<p class="figure">Figure 3: Example of DISCOVER pubsub function</p>
+<p class="figure">Figure 3: Example of DISCOVER pub/sub function</p>
 <div id="rfc.figure.4"></div>
 <div id="discover-topic-fig"></div>
 <pre>
@@ -607,7 +607,7 @@ Client                                          Broker
 <h1 id="rfc.section.4.2">
 <a href="#rfc.section.4.2">4.2.</a> <a href="#create" id="create">CREATE</a>
 </h1>
-<p id="rfc.section.4.2.p.1">A CoAP pubsub broker MAY allow Clients to create new topics on the broker using CREATE. A client wishing to create a topic MUST use CoAP POST to the pubsub API with a payload indicating the desired topic. The topic specification sent in the payload MUST use a supported serialization of the CoRE link format <a href="#RFC6690" class="xref">[RFC6690]</a>. The target of the link MUST be a URI formatted string. The client MUST indicate the desired content format for publishes to the topic by using the ct (Content Format) link attribute in the link-format payload. The client MAY indicate the lifetime of the topic by including the Max-Age option in the CREATE request.</p>
+<p id="rfc.section.4.2.p.1">A CoAP pub/sub broker MAY allow Clients to create new topics on the broker using CREATE. A client wishing to create a topic MUST use CoAP POST to the pub/sub API with a payload indicating the desired topic. The topic specification sent in the payload MUST use a supported serialization of the CoRE link format <a href="#RFC6690" class="xref">[RFC6690]</a>. The target of the link MUST be a URI formatted string. The client MUST indicate the desired content format for publishes to the topic by using the ct (Content Format) link attribute in the link-format payload. The client MAY indicate the lifetime of the topic by including the Max-Age option in the CREATE request.</p>
 <p id="rfc.section.4.2.p.2">A Broker MUST return a response code of &#8220;2.01 Created&#8221; if the topic is created and return the URI path of the created topic via Location-Path options. The broker MUST return the appropriate 4.xx response code indicating the reason for failure if a new topic can not be created. Broker SHOULD remove topics if the Max-Age of the topic is exceeded without any publishes to the topic.  Broker SHOULD retain a topic indefinitely if the Max-Age option is elided or is set to zero upon topic creation. The lifetime of a topic MUST be refreshed upon create operations with a target of an existing topic.</p>
 <p id="rfc.section.4.2.p.3">Topics may be created as sub-topics of other topics. A client MAY create a topic with a ct (Content Format) link attribute value which describes a supported serialization of the CoRE link format <a href="#RFC6690" class="xref">[RFC6690]</a> such as application/link-format (ct=40) or its JSON or CBOR serializations.  If a topic is created which describes a link serialization, that topic may then have sub-topics created under it as shown in <a href="#create-sub-fig" class="xref">Figure 7</a>.</p>
 <p id="rfc.section.4.2.p.4">The CREATE interface is specified as follows:</p>
@@ -619,9 +619,9 @@ Client                                          Broker
 <dt>Method:</dt>
 <dd style="margin-left: 8">POST</dd>
 <dt>URI Template:</dt>
-<dd style="margin-left: 8">/{+ps}/{+topic}{?q*}</dd>
+<dd style="margin-left: 8">{+ps}/{+topic}{?q*}</dd>
 <dt>URI Template Variables:</dt>
-<dd style="margin-left: 8">ps := pubsub REST API entry point (optional). The entry point of the pubsub REST API, as obtained from discovery, used to discover topics.</dd>
+<dd style="margin-left: 8">ps := Pub/sub REST API entry point (optional). The entry point of the pub/sub REST API, as obtained from discovery, used to discover topics.</dd>
 <dt></dt>
 <dd style="margin-left: 8">topic := The desired topic to return links for (optional).</dd>
 <dt></dt>
@@ -682,7 +682,7 @@ Client                                          Broker
 <h1 id="rfc.section.4.3">
 <a href="#rfc.section.4.3">4.3.</a> <a href="#publish" id="publish">PUBLISH</a>
 </h1>
-<p id="rfc.section.4.3.p.1">A CoAP pubsub broker MAY allow clients to PUBLISH to topics on the broker. A client MAY use the PUT or the POST method to publish state updates to the CoAP pubsub Broker. A client MUST use the content format specified upon creation of a given topic to publish updates to that topic. The broker MUST reject publish operations which do not use the specified content format.  A CoAP client publishing on a topic MAY indicate the maximum lifetime of the value by including the Max-Age option in the publish request. The broker MUST return a response code of &#8220;2.04 Changed&#8221; if the publish is accepted.  A Broker MAY return a &#8220;4.04 Not Found&#8221; if the topic does not exist. A broker MAY return &#8220;4.29 Too Many Requests&#8221; if simple flow control as described in <a href="#sec-flow-control" class="xref">Section 7</a> is implemented.</p>
+<p id="rfc.section.4.3.p.1">A CoAP pub/sub broker MAY allow clients to PUBLISH to topics on the broker. A client MAY use the PUT or the POST method to publish state updates to the CoAP pub/sub Broker. A client MUST use the content format specified upon creation of a given topic to publish updates to that topic. The broker MUST reject publish operations which do not use the specified content format.  A CoAP client publishing on a topic MAY indicate the maximum lifetime of the value by including the Max-Age option in the publish request. The broker MUST return a response code of &#8220;2.04 Changed&#8221; if the publish is accepted.  A Broker MAY return a &#8220;4.04 Not Found&#8221; if the topic does not exist. A broker MAY return &#8220;4.29 Too Many Requests&#8221; if simple flow control as described in <a href="#sec-flow-control" class="xref">Section 7</a> is implemented.</p>
 <p id="rfc.section.4.3.p.2">A Broker MUST accept PUBLISH operations using the PUT method. PUBLISH operations using the PUT method replace any stored representation associated with the topic, with the supplied representation. A Broker MAY reject, or delay responses to, PUT requests to a topic while pending resolution of notifications to subscribers from previous PUT requests.</p>
 <p id="rfc.section.4.3.p.3">Create on PUBLISH: A Broker MAY accept PUBLISH operations to new topics using the PUT method. If a Broker accepts a PUBLISH using PUT to a topic that does not exist, the Broker MUST create the topic using the information in the PUT operation. The Broker MUST create a topic with the URI-Path of the request, including all of the sub-topics necessary, and create a topic link with the ct attribute set to the content-format of the payload of the PUT request.  If topic is created, the Broker MUST return the response &#8220;2.01 Created&#8221; with the URI of the created topic, including all of the created path segments, returned via the Location-Path option.</p>
 <p id="rfc.section.4.3.p.4">A Broker MAY accept PUBLISH operations using the POST method. If a broker accepts PUBLISH using POST it shall respond with the 2.04 Changed status code.</p>
@@ -697,9 +697,9 @@ Client                                          Broker
 <dt>Method:</dt>
 <dd style="margin-left: 8">PUT, POST</dd>
 <dt>URI Template:</dt>
-<dd style="margin-left: 8">/{+ps}/{+topic}{?q*}</dd>
+<dd style="margin-left: 8">{+ps}/{+topic}{?q*}</dd>
 <dt>URI Template Variables:</dt>
-<dd style="margin-left: 8">ps := pubsub REST API entry point (optional). The entry point of the pubsub REST API, as obtained from discovery, used to discover topics.</dd>
+<dd style="margin-left: 8">ps := Pub/sub REST API entry point (optional). The entry point of the pub/sub REST API, as obtained from discovery, used to discover topics.</dd>
 <dt></dt>
 <dd style="margin-left: 8">topic := The desired topic to return links for (optional).</dd>
 <dt></dt>
@@ -757,7 +757,7 @@ Client                                          Broker
 <h1 id="rfc.section.4.4">
 <a href="#rfc.section.4.4">4.4.</a> <a href="#subscribe" id="subscribe">SUBSCRIBE</a>
 </h1>
-<p id="rfc.section.4.4.p.1">A CoAP pubsub broker MAY allow Clients to subscribe to topics on the Broker using CoAP Observe as described in <a href="#RFC7641" class="xref">[RFC7641]</a>. A CoAP pubsub Client wishing to Subscribe to a topic on a broker MUST use a CoAP GET with the Observe option set to 0 (zero). The Broker MAY add the client to a list of observers. The Broker MUST return a response code of &#8220;2.05 Content&#8221; along with the most recently published value if the topic contains a valid value and the broker can supply the requested content format. The broker MUST reject Subscribe requests on a topic if the content format of the request is not supported by the content format the topic was created with. The broker MAY accept Subscribe requests which specify content formats that the broker can supply as alternate content formats to the content format the topic was registered with. If the topic was published with the Max-Age option, the broker MUST set the Max-Age option in the valid response to the amount of time remaining for the value to be valid since the last publish operation on that topic. The Broker MUST return a response code of &#8220;2.07 No Content&#8221; if the Max-Age of the previously stored value has expired. The Broker MUST return a response code &#8220;4.04 Not Found&#8221; if the topic does not exist or has been removed. The Broker MUST return a response code &#8220;4.15 Unsupported Content Format&#8221; if it can not return the requested content format. If a Broker is unable to accept a new Subscription on a topic, it SHOULD return the appropriate response code without the Observe option as per as per <a href="#RFC7641" class="xref">[RFC7641]</a> Section 4.1. There is no explicit maximum lifetime of a Subscription, thus a Broker may remove subscribers at any time. The Broker, upon removing a Subscriber, will transmit the appropriate response code without the Observe option, as per <a href="#RFC7641" class="xref">[RFC7641]</a> Section 4.2, to the removed Subscriber.</p>
+<p id="rfc.section.4.4.p.1">A CoAP pub/sub broker MAY allow Clients to subscribe to topics on the Broker using CoAP Observe as described in <a href="#RFC7641" class="xref">[RFC7641]</a>. A CoAP pub/sub Client wishing to Subscribe to a topic on a broker MUST use a CoAP GET with the Observe option set to 0 (zero). The Broker MAY add the client to a list of observers. The Broker MUST return a response code of &#8220;2.05 Content&#8221; along with the most recently published value if the topic contains a valid value and the broker can supply the requested content format. The broker MUST reject Subscribe requests on a topic if the content format of the request is not supported by the content format the topic was created with. The broker MAY accept Subscribe requests which specify content formats that the broker can supply as alternate content formats to the content format the topic was registered with. If the topic was published with the Max-Age option, the broker MUST set the Max-Age option in the valid response to the amount of time remaining for the value to be valid since the last publish operation on that topic. The Broker MUST return a response code of &#8220;2.07 No Content&#8221; if the Max-Age of the previously stored value has expired. The Broker MUST return a response code &#8220;4.04 Not Found&#8221; if the topic does not exist or has been removed. The Broker MUST return a response code &#8220;4.15 Unsupported Content Format&#8221; if it can not return the requested content format. If a Broker is unable to accept a new Subscription on a topic, it SHOULD return the appropriate response code without the Observe option as per as per <a href="#RFC7641" class="xref">[RFC7641]</a> Section 4.1. There is no explicit maximum lifetime of a Subscription, thus a Broker may remove subscribers at any time. The Broker, upon removing a Subscriber, will transmit the appropriate response code without the Observe option, as per <a href="#RFC7641" class="xref">[RFC7641]</a> Section 4.2, to the removed Subscriber.</p>
 <p id="rfc.section.4.4.p.2">The SUBSCRIBE interface is specified as follows:</p>
 <p></p>
 
@@ -769,9 +769,9 @@ Client                                          Broker
 <dt>Options:</dt>
 <dd style="margin-left: 8">Observe:0</dd>
 <dt>URI Template:</dt>
-<dd style="margin-left: 8">/{+ps}/{+topic}{?q*}</dd>
+<dd style="margin-left: 8">{+ps}/{+topic}{?q*}</dd>
 <dt>URI Template Variables:</dt>
-<dd style="margin-left: 8">ps := pubsub REST API entry point (optional). The entry point of the pubsub REST API, as obtained from discovery, used to discover topics.</dd>
+<dd style="margin-left: 8">ps := Pub/sub REST API entry point (optional). The entry point of the pub/sub REST API, as obtained from discovery, used to discover topics.</dd>
 <dt></dt>
 <dd style="margin-left: 8">topic := The desired topic to return links for (optional).</dd>
 <dt></dt>
@@ -816,7 +816,7 @@ Client1   Client2                                          Broker
 <h1 id="rfc.section.4.5">
 <a href="#rfc.section.4.5">4.5.</a> <a href="#unsubscribe" id="unsubscribe">UNSUBSCRIBE</a>
 </h1>
-<p id="rfc.section.4.5.p.1">If a CoAP pubsub broker allows clients to SUBSCRIBE to topics on the broker, it MUST allow Clients to unsubscribe from topics on the Broker using the CoAP Cancel Observation operation. A CoAP pubsub Client wishing to unsubscribe to a topic on a Broker MUST either use CoAP GET with Observe using an Observe parameter of 1 or send a CoAP Reset message in response to a publish, as per <a href="#RFC7641" class="xref">[RFC7641]</a>.</p>
+<p id="rfc.section.4.5.p.1">If a CoAP pub/sub broker allows clients to SUBSCRIBE to topics on the broker, it MUST allow Clients to unsubscribe from topics on the Broker using the CoAP Cancel Observation operation. A CoAP pub/sub Client wishing to unsubscribe to a topic on a Broker MUST either use CoAP GET with Observe using an Observe parameter of 1 or send a CoAP Reset message in response to a publish, as per <a href="#RFC7641" class="xref">[RFC7641]</a>.</p>
 <p id="rfc.section.4.5.p.2">The UNSUBSCRIBE interface is specified as follows:</p>
 <p></p>
 
@@ -828,9 +828,9 @@ Client1   Client2                                          Broker
 <dt>Options:</dt>
 <dd style="margin-left: 8">Observe:1</dd>
 <dt>URI Template:</dt>
-<dd style="margin-left: 8">/{+ps}/{+topic}{?q*}</dd>
+<dd style="margin-left: 8">{+ps}/{+topic}{?q*}</dd>
 <dt>URI Template Variables:</dt>
-<dd style="margin-left: 8">ps := pubsub REST API entry point (optional). The entry point of the pubsub REST API, as obtained from discovery, used to discover topics.</dd>
+<dd style="margin-left: 8">ps := Pub/sub REST API entry point (optional). The entry point of the pub/sub REST API, as obtained from discovery, used to discover topics.</dd>
 <dt></dt>
 <dd style="margin-left: 8">topic := The desired topic to return links for (optional).</dd>
 <dt></dt>
@@ -867,7 +867,7 @@ Client                                          Broker
 <h1 id="rfc.section.4.6">
 <a href="#rfc.section.4.6">4.6.</a> <a href="#read" id="read">READ</a>
 </h1>
-<p id="rfc.section.4.6.p.1">A CoAP pubsub broker MAY accept Read requests on a topic using the the CoAP GET method if the content format of the request matches the content format the topic was created with.  The broker MAY accept Read requests which specify content formats that the broker can supply as alternate content formats to the content format the topic was registered with. The Broker MUST return a response code of &#8220;2.05 Content&#8221; along with the most recently published value if the topic contains a valid value and the broker can supply the requested content format. If the topic was published with the Max-Age option, the broker MUST set the Max-Age option in the valid response to the amount of time remaining for the topic to be valid since the last publish. The Broker MUST return a response code of &#8220;2.07 No Content&#8221; if the Max-Age of the previously stored value has expired. The Broker MUST return a response code &#8220;4.04 Not Found&#8221; if the topic does not exist or has been removed. The Broker MUST return a response code &#8220;4.15 Unsupported Content Format&#8221; if the broker can not return the requested content format.</p>
+<p id="rfc.section.4.6.p.1">A CoAP pub/sub broker MAY accept Read requests on a topic using the the CoAP GET method if the content format of the request matches the content format the topic was created with.  The broker MAY accept Read requests which specify content formats that the broker can supply as alternate content formats to the content format the topic was registered with. The Broker MUST return a response code of &#8220;2.05 Content&#8221; along with the most recently published value if the topic contains a valid value and the broker can supply the requested content format. If the topic was published with the Max-Age option, the broker MUST set the Max-Age option in the valid response to the amount of time remaining for the topic to be valid since the last publish. The Broker MUST return a response code of &#8220;2.07 No Content&#8221; if the Max-Age of the previously stored value has expired. The Broker MUST return a response code &#8220;4.04 Not Found&#8221; if the topic does not exist or has been removed. The Broker MUST return a response code &#8220;4.15 Unsupported Content Format&#8221; if the broker can not return the requested content format.</p>
 <p id="rfc.section.4.6.p.2">The READ interface is specified as follows:</p>
 <p></p>
 
@@ -877,9 +877,9 @@ Client                                          Broker
 <dt>Method:</dt>
 <dd style="margin-left: 8">GET</dd>
 <dt>URI Template:</dt>
-<dd style="margin-left: 8">/{+ps}/{+topic}{?q*}</dd>
+<dd style="margin-left: 8">{+ps}/{+topic}{?q*}</dd>
 <dt>URI Template Variables:</dt>
-<dd style="margin-left: 8">ps := pubsub REST API entry point (optional). The entry point of the pubsub REST API, as obtained from discovery, used to discover topics.</dd>
+<dd style="margin-left: 8">ps := Pub/sub REST API entry point (optional). The entry point of the pub/sub REST API, as obtained from discovery, used to discover topics.</dd>
 <dt></dt>
 <dd style="margin-left: 8">topic := The desired topic to return links for (optional).</dd>
 <dt></dt>
@@ -928,7 +928,7 @@ Client1   Client2                                          Broker
 <h1 id="rfc.section.4.7">
 <a href="#rfc.section.4.7">4.7.</a> <a href="#remove" id="remove">REMOVE</a>
 </h1>
-<p id="rfc.section.4.7.p.1">A CoAP pubsub broker MAY allow clientsremove a topics from the broker using the CoAP Delete method on the URI of the topic. The CoAP pubsub Broker MUST return &#8220;2.02 Deleted&#8221; if the removal is successful. The broker MUST return the appropriate 4.xx response code indicating the reason for failure if the topic can not be removed. When a topic is removed for any reason, the Broker SHOULD return the response code 4.04 Not Found and remove all of the observers from the list of observers as per as per <a href="#RFC7641" class="xref">[RFC7641]</a> Section 3.2. If a topic which has sub-topics is removed, then all of its sub-topics MUST be recursively removed.</p>
+<p id="rfc.section.4.7.p.1">A CoAP pub/sub broker MAY allow clientsremove a topics from the broker using the CoAP Delete method on the URI of the topic. The CoAP pub/sub Broker MUST return &#8220;2.02 Deleted&#8221; if the removal is successful. The broker MUST return the appropriate 4.xx response code indicating the reason for failure if the topic can not be removed. When a topic is removed for any reason, the Broker SHOULD return the response code 4.04 Not Found and remove all of the observers from the list of observers as per as per <a href="#RFC7641" class="xref">[RFC7641]</a> Section 3.2. If a topic which has sub-topics is removed, then all of its sub-topics MUST be recursively removed.</p>
 <p id="rfc.section.4.7.p.2">The REMOVE interface is specified as follows:</p>
 <p></p>
 
@@ -938,9 +938,9 @@ Client1   Client2                                          Broker
 <dt>Method:</dt>
 <dd style="margin-left: 8">DELETE</dd>
 <dt>URI Template:</dt>
-<dd style="margin-left: 8">/{+ps}/{+topic}{?q*}</dd>
+<dd style="margin-left: 8">{+ps}/{+topic}{?q*}</dd>
 <dt>URI Template Variables:</dt>
-<dd style="margin-left: 8">ps := pubsub REST API entry point (optional). The entry point of the pubsub REST API, as obtained from discovery, used to discover topics.</dd>
+<dd style="margin-left: 8">ps := Pub/sub REST API entry point (optional). The entry point of the pub/sub REST API, as obtained from discovery, used to discover topics.</dd>
 <dt></dt>
 <dd style="margin-left: 8">topic := The desired topic to return links for (optional).</dd>
 <dt></dt>
@@ -978,16 +978,16 @@ Client                                         Broker
 </pre>
 <p class="figure">Figure 13: Example of REMOVE</p>
 <h1 id="rfc.section.5">
-<a href="#rfc.section.5">5.</a> <a href="#coap-pubsub-operation-with-resource-directory" id="coap-pubsub-operation-with-resource-directory">CoAP pubsub Operation with Resource Directory</a>
+<a href="#rfc.section.5">5.</a> <a href="#coap-pubsub-operation-with-resource-directory" id="coap-pubsub-operation-with-resource-directory">CoAP Pub/sub Operation with Resource Directory</a>
 </h1>
-<p id="rfc.section.5.p.1">A CoAP pubsub Broker may register the base URI, which is the REST API entry point for a pubsub service, with a Resource Directory. A pubsub Client may use an RD to discover a pubsub Broker.</p>
-<p id="rfc.section.5.p.2">A CoAP pubsub Client may register links <a href="#RFC6690" class="xref">[RFC6690]</a> with a Resource Directory to enable discovery of created pubsub topics. A pubsub Client may use an RD to discover pubsub Topics. A client which registers pubsub Topics with an RD MUST use the context relation (con) <a href="#I-D.ietf-core-resource-directory" class="xref">[I-D.ietf-core-resource-directory]</a> to indicate that the context of the registered links is the pubsub Broker.</p>
-<p id="rfc.section.5.p.3">A CoAP pubsub Broker may alternatively register links to its topics to a Resource Directory by triggering the RD to retrieve it&#8217;s links from .well-known/core.  In order to use this method, the links must first be exposed in the .well-known/core of the pubsub broker. See <a href="#discover" class="xref">Section 4.1</a> in this document.</p>
-<p id="rfc.section.5.p.4">The pubsub broker triggers the RD to retrieve its links by sending a POST with an empty payload to the .well-known/core of the Resource Directory.  The RD server will then retrieve the links from the .well-known/core of the pubsub broker and incorporate them into the Resource Directory. See <a href="#I-D.ietf-core-resource-directory" class="xref">[I-D.ietf-core-resource-directory]</a> for further details.</p>
+<p id="rfc.section.5.p.1">A CoAP pub/sub Broker may register the base URI, which is the REST API entry point for a pub/sub service, with a Resource Directory. A pub/sub Client may use an RD to discover a pub/sub Broker.</p>
+<p id="rfc.section.5.p.2">A CoAP pub/sub Client may register links <a href="#RFC6690" class="xref">[RFC6690]</a> with a Resource Directory to enable discovery of created pub/sub topics. A pub/sub Client may use an RD to discover pub/sub Topics. A client which registers pub/sub Topics with an RD MUST use the context relation (con) <a href="#I-D.ietf-core-resource-directory" class="xref">[I-D.ietf-core-resource-directory]</a> to indicate that the context of the registered links is the pub/sub Broker.</p>
+<p id="rfc.section.5.p.3">A CoAP pub/sub Broker may alternatively register links to its topics to a Resource Directory by triggering the RD to retrieve it&#8217;s links from .well-known/core.  In order to use this method, the links must first be exposed in the .well-known/core of the pub/sub broker. See <a href="#discover" class="xref">Section 4.1</a> in this document.</p>
+<p id="rfc.section.5.p.4">The pub/sub broker triggers the RD to retrieve its links by sending a POST with an empty payload to the .well-known/core of the Resource Directory.  The RD server will then retrieve the links from the .well-known/core of the pub/sub broker and incorporate them into the Resource Directory. See <a href="#I-D.ietf-core-resource-directory" class="xref">[I-D.ietf-core-resource-directory]</a> for further details.</p>
 <h1 id="rfc.section.6">
 <a href="#rfc.section.6">6.</a> <a href="#sleep-wake-operation" id="sleep-wake-operation">Sleep-Wake Operation</a>
 </h1>
-<p id="rfc.section.6.p.1">CoAP pubsub provides a way for client nodes to sleep between operations, conserving energy during idle periods. This is made possible by shifting the server role to the broker, allowing the broker to be always-on and respond to requests from other clients while a particular client is sleeping.</p>
+<p id="rfc.section.6.p.1">CoAP pub/sub provides a way for client nodes to sleep between operations, conserving energy during idle periods. This is made possible by shifting the server role to the broker, allowing the broker to be always-on and respond to requests from other clients while a particular client is sleeping.</p>
 <p id="rfc.section.6.p.2">For example, the broker will retain the last state update received from a sleeping client, in order to supply the most recent state update to other clients in response to read and subscribe operations.</p>
 <p id="rfc.section.6.p.3">Likewise, the broker will retain the last state update received on the topic such that a sleeping client, upon waking, can perform a read operation to the broker to update its own state from the most recent system state update.</p>
 <h1 id="rfc.section.7">
@@ -999,10 +999,9 @@ Client                                         Broker
 <h1 id="rfc.section.8">
 <a href="#rfc.section.8">8.</a> <a href="#SecurityConsiderations" id="SecurityConsiderations">Security Considerations</a>
 </h1>
-<p id="rfc.section.8.p.1">CoAP pubsub re-uses CoAP <a href="#RFC7252" class="xref">[RFC7252]</a>, CoRE Resource Directory <a href="#I-D.ietf-core-resource-directory" class="xref">[I-D.ietf-core-resource-directory]</a>, and Web Linking <a href="#RFC5988" class="xref">[RFC5988]</a> and therefore the security considerations of those documents also apply to this specification. Additionally, a CoAP pubsub broker and the clients SHOULD authenticate each other and enforce access control policies. A malicious client could subscribe to data it is not authorized to or mount a denial of service attack against the broker by publishing a large number of resources.  The authentication can be performed using the already standardized DTLS offered mechanisms, such as certificates. DTLS also allows communication security to be established to ensure integrity and confidentiality protection of the data exchanged between these relevant parties. Provisioning the necessary credentials, trust anchors and authorization policies is non-trivial and subject of ongoing work.</p>
-<p id="rfc.section.8.p.2">The use of a CoAP pubsub broker introduces challenges for the use of end-to-end security between for example a client device on a sensor network and a client application running in a cloud-based server infrastructure since brokers terminate the exchange. While running separate DTLS sessions from the client device to the broker and from broker to client application protects confidentially on those paths, the client device does not know whether the commands coming from the broker are actually coming from the client application. Similarly, a client application requesting data does not know whether the data originated on the client device. For scenarios where end-to-end security is desirable the use of application layer security is unavoidable. Application layer security would then provide a guarantee to the client device that any request originated at the client application. Similarly, integrity protected sensor data from a client device will also provide guarantee to the client application that the data originated on the client device itself. The protected data can also be verified by the intermediate broker ensuring that it stores/caches correct request/response and no malicious messages/requests are accepted. The broker would still be able to perform aggregation of data/requests collected.</p>
-<p id="rfc.section.8.p.3">Depending on the level of trust users and system designers place in the CoAP pubsub broker, the use of end-to-end object security is RECOMMENDED as described in <a href="#I-D.palombini-ace-coap-pubsub-profile" class="xref">[I-D.palombini-ace-coap-pubsub-profile]</a>.</p>
-<p id="rfc.section.8.p.4">When only end-to-end encryption is necessary and the CoAP Broker is trusted, Payload Only Protection (Mode:PAYL) could be used. The Publisher would wrap only the payload before sending it to the broker and set the option Content-Format to application/smpayl. Upon receival, the Broker can read the unencrypted CoAP header to forward it to the subscribers.</p>
+<p id="rfc.section.8.p.1">CoAP pub/sub re-uses CoAP <a href="#RFC7252" class="xref">[RFC7252]</a>, CoRE Resource Directory <a href="#I-D.ietf-core-resource-directory" class="xref">[I-D.ietf-core-resource-directory]</a>, and Web Linking <a href="#RFC5988" class="xref">[RFC5988]</a> and therefore the security considerations of those documents also apply to this specification. Additionally, a CoAP pub/sub broker and the clients SHOULD authenticate each other and enforce access control policies. A malicious client could subscribe to data it is not authorized to or mount a denial of service attack against the broker by publishing a large number of resources.  The authentication can be performed using the already standardized DTLS offered mechanisms, such as certificates. DTLS also allows communication security to be established to ensure integrity and confidentiality protection of the data exchanged between these relevant parties. Provisioning the necessary credentials, trust anchors and authorization policies is non-trivial and subject of ongoing work.</p>
+<p id="rfc.section.8.p.2">The use of a CoAP pub/sub broker introduces challenges for the use of end-to-end security between for example a client device on a sensor network and a client application running in a cloud-based server infrastructure since brokers terminate the exchange. While running separate DTLS sessions from the client device to the broker and from broker to client application protects confidentially on those paths, the client device does not know whether the commands coming from the broker are actually coming from the client application. Similarly, a client application requesting data does not know whether the data originated on the client device. For scenarios where end-to-end security is desirable the use of application layer security is unavoidable. Application layer security would then provide a guarantee to the client device that any request originated at the client application. Similarly, integrity protected sensor data from a client device will also provide guarantee to the client application that the data originated on the client device itself. The protected data can also be verified by the intermediate broker ensuring that it stores/caches correct request/response and no malicious messages/requests are accepted. The broker would still be able to perform aggregation of data/requests collected.</p>
+<p id="rfc.section.8.p.3">Depending on the level of trust users and system designers place in the CoAP pub/sub broker, the use of end-to-end object security is RECOMMENDED as described in <a href="#I-D.palombini-ace-coap-pubsub-profile" class="xref">[I-D.palombini-ace-coap-pubsub-profile]</a>.  When only end-to-end encryption is necessary and the CoAP Broker is trusted, Payload Only Protection (Mode:PAYL) could be used. The Publisher would wrap only the payload before sending it to the broker and set the option Content-Format to application/smpayl. Upon receival, the Broker can read the unencrypted CoAP header to forward it to the subscribers.</p>
 <h1 id="rfc.section.9">
 <a href="#rfc.section.9">9.</a> <a href="#iana" id="iana">IANA Considerations</a>
 </h1>
@@ -1097,12 +1096,12 @@ Client                                         Broker
 <tr>
 <td class="reference"><b id="I-D.ietf-core-resource-directory">[I-D.ietf-core-resource-directory]</b></td>
 <td class="top">
-<a>Shelby, Z.</a>, <a>Koster, M.</a>, <a>Bormann, C.</a> and <a>P. Stok</a>, "<a href="https://tools.ietf.org/html/draft-ietf-core-resource-directory-10">CoRE Resource Directory</a>", Internet-Draft draft-ietf-core-resource-directory-10, March 2017.</td>
+<a>Shelby, Z.</a>, <a>Koster, M.</a>, <a>Bormann, C.</a>, <a>Stok, P.</a> and <a>C. Amsuess</a>, "<a href="https://tools.ietf.org/html/draft-ietf-core-resource-directory-12">CoRE Resource Directory</a>", Internet-Draft draft-ietf-core-resource-directory-12, October 2017.</td>
 </tr>
 <tr>
 <td class="reference"><b id="I-D.palombini-ace-coap-pubsub-profile">[I-D.palombini-ace-coap-pubsub-profile]</b></td>
 <td class="top">
-<a>Palombini, F.</a>, "<a href="https://tools.ietf.org/html/draft-palombini-ace-coap-pubsub-profile-00">CoAP Pub-Sub Profile for Authentication and Authorization for Constrained Environments (ACE)</a>", Internet-Draft draft-palombini-ace-coap-pubsub-profile-00, March 2017.</td>
+<a>Palombini, F.</a>, "<a href="https://tools.ietf.org/html/draft-palombini-ace-coap-pubsub-profile-01">CoAP Pub-Sub Profile for Authentication and Authorization for Constrained Environments (ACE)</a>", Internet-Draft draft-palombini-ace-coap-pubsub-profile-01, September 2017.</td>
 </tr>
 <tr>
 <td class="reference"><b id="I-D.selander-ace-object-security">[I-D.selander-ace-object-security]</b></td>
