@@ -306,6 +306,7 @@ address {
 <link href="#rfc.section.9.1" rel="Chapter" title="9.1 Resource Type value &#8216;core.ps&#8217;">
 <link href="#rfc.section.9.2" rel="Chapter" title="9.2 Resource Type value &#8216;core.ps.discover&#8217;">
 <link href="#rfc.section.9.3" rel="Chapter" title="9.3 Response Code value &#8216;2.07&#8217;">
+<link href="#rfc.section.9.4" rel="Chapter" title="9.4 Response Code value &#8216;4.29&#8217;">
 <link href="#rfc.section.10" rel="Chapter" title="10 Acknowledgements">
 <link href="#rfc.references" rel="Chapter" title="11 References">
 <link href="#rfc.references.1" rel="Chapter" title="11.1 Normative References">
@@ -424,6 +425,8 @@ address {
 <li>9.2.   <a href="#rfc.section.9.2">Resource Type value &#8216;core.ps.discover&#8217;</a>
 </li>
 <li>9.3.   <a href="#rfc.section.9.3">Response Code value &#8216;2.07&#8217;</a>
+</li>
+<li>9.4.   <a href="#rfc.section.9.4">Response Code value &#8216;4.29&#8217;</a>
 </li>
 </ul><li>10.   <a href="#rfc.section.10">Acknowledgements</a>
 </li>
@@ -997,7 +1000,7 @@ Client                                         Broker
 <a href="#rfc.section.7">7.</a> <a href="#sec-flow-control" id="sec-flow-control">Simple Flow Control</a>
 </h1>
 <p id="rfc.section.7.p.1">Since the broker node has to potentially send a large amount of notification messages for each publish message and it may be serving a large amount of subscribers and publishers simultaneously, the broker may become overwhelmed if it receives many publish messages to popular topics in a short period of time.</p>
-<p id="rfc.section.7.p.2">If the broker is unable to serve a certain client that is sending publish messages too fast, the broker SHOULD respond with Response Code 4.29, &#8220;Too Many Requests&#8221; <a href="#I-D.keranen-core-too-many-reqs" class="xref">[I-D.keranen-core-too-many-reqs]</a> and set the Max-Age Option to indicate the number of seconds after which the client can retry. The broker MAY stop creating notifications from the publish messages from this client and to this topic for the indicated time.</p>
+<p id="rfc.section.7.p.2">If the broker is unable to serve a certain client that is sending publish messages too fast, the broker MUST respond with Response Code 4.29, &#8220;Too Many Requests&#8221;. This Response Code is like HTTP 429 &#8220;Too Many Requests&#8221; but uses the Max-Age Option in place of the &#8220;Retry-After&#8221; header field to indicate the number of seconds after which to retry. The broker MAY stop creating notifications from the publish messages from this client and to this topic for the indicated time.</p>
 <p id="rfc.section.7.p.3">If a client receives the 4.29 Response Code from the broker for a publish message to a topic, it MUST NOT send new publish messages to the broker on the same topic before the time indicated in Max-Age has passed.</p>
 <h1 id="rfc.section.8">
 <a href="#rfc.section.8">8.</a> <a href="#SecurityConsiderations" id="SecurityConsiderations">Security Considerations</a>
@@ -1042,6 +1045,17 @@ Client                                         Broker
 <li>Reference: [[This document]]</li>
 <li>Notes: The server sends this code to the client to indicate that the request was valid and accepted, but the responce may contain an empty payload. It is comparable to and may be proxied with the http 204 No Content status code.</li>
 </ul>
+<h1 id="rfc.section.9.4">
+<a href="#rfc.section.9.4">9.4.</a> <a href="#response-code-value-429" id="response-code-value-429">Response Code value &#8216;4.29&#8217;</a>
+</h1>
+<p></p>
+
+<ul>
+<li>Response Code: 4.29</li>
+<li>Description: This error code is used by a server to indicate that a client is making too many requests on a resource.</li>
+<li>Reference: [[This document]]</li>
+<li>Notes: None</li>
+</ul>
 <h1 id="rfc.section.10">
 <a href="#rfc.section.10">10.</a> <a href="#acks" id="acks">Acknowledgements</a>
 </h1>
@@ -1051,11 +1065,6 @@ Client                                         Broker
 <h1 id="rfc.references.1">
 <a href="#rfc.references.1">11.1.</a> Normative References</h1>
 <table><tbody>
-<tr>
-<td class="reference"><b id="I-D.keranen-core-too-many-reqs">[I-D.keranen-core-too-many-reqs]</b></td>
-<td class="top">
-<a>Keranen, A.</a>, "<a href="https://tools.ietf.org/html/draft-keranen-core-too-many-reqs-00">Too Many Requests Response Code for the Constrained Application Protocol</a>", Internet-Draft draft-keranen-core-too-many-reqs-00, March 2018.</td>
-</tr>
 <tr>
 <td class="reference"><b id="RFC2119">[RFC2119]</b></td>
 <td class="top">
@@ -1091,19 +1100,19 @@ Client                                         Broker
 <a href="#rfc.references.2">11.2.</a> Informative References</h1>
 <table><tbody>
 <tr>
-<td class="reference"><b id="I-D.ietf-core-object-security">[I-D.ietf-core-object-security]</b></td>
-<td class="top">
-<a>Selander, G.</a>, <a>Mattsson, J.</a>, <a>Palombini, F.</a> and <a>L. Seitz</a>, "<a href="https://tools.ietf.org/html/draft-ietf-core-object-security-09">Object Security for Constrained RESTful Environments (OSCORE)</a>", Internet-Draft draft-ietf-core-object-security-09, March 2018.</td>
-</tr>
-<tr>
 <td class="reference"><b id="I-D.ietf-core-resource-directory">[I-D.ietf-core-resource-directory]</b></td>
 <td class="top">
-<a>Shelby, Z.</a>, <a>Koster, M.</a>, <a>Bormann, C.</a>, <a>Stok, P.</a> and <a>C. Amsuess</a>, "<a href="https://tools.ietf.org/html/draft-ietf-core-resource-directory-13">CoRE Resource Directory</a>", Internet-Draft draft-ietf-core-resource-directory-13, March 2018.</td>
+<a>Shelby, Z.</a>, <a>Koster, M.</a>, <a>Bormann, C.</a>, <a>Stok, P.</a> and <a>C. Amsuess</a>, "<a href="https://tools.ietf.org/html/draft-ietf-core-resource-directory-12">CoRE Resource Directory</a>", Internet-Draft draft-ietf-core-resource-directory-12, October 2017.</td>
 </tr>
 <tr>
 <td class="reference"><b id="I-D.palombini-ace-coap-pubsub-profile">[I-D.palombini-ace-coap-pubsub-profile]</b></td>
 <td class="top">
-<a>Palombini, F.</a>, "<a href="https://tools.ietf.org/html/draft-palombini-ace-coap-pubsub-profile-02">CoAP Pub-Sub Profile for Authentication and Authorization for Constrained Environments (ACE)</a>", Internet-Draft draft-palombini-ace-coap-pubsub-profile-02, March 2018.</td>
+<a>Palombini, F.</a>, "<a href="https://tools.ietf.org/html/draft-palombini-ace-coap-pubsub-profile-01">CoAP Pub-Sub Profile for Authentication and Authorization for Constrained Environments (ACE)</a>", Internet-Draft draft-palombini-ace-coap-pubsub-profile-01, September 2017.</td>
+</tr>
+<tr>
+<td class="reference"><b id="I-D.selander-ace-object-security">[I-D.selander-ace-object-security]</b></td>
+<td class="top">
+<a>Selander, G.</a>, <a>Mattsson, J.</a>, <a>Palombini, F.</a> and <a>L. Seitz</a>, "<a href="https://tools.ietf.org/html/draft-selander-ace-object-security-06">Object Security of CoAP (OSCOAP)</a>", Internet-Draft draft-selander-ace-object-security-06, October 2016.</td>
 </tr>
 <tr>
 <td class="reference"><b id="RFC5988">[RFC5988]</b></td>
