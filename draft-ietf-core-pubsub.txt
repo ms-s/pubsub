@@ -5,9 +5,9 @@
 Network Working Group                                          M. Koster
 Internet-Draft                                               SmartThings
 Intended status: Standards Track                              A. Keranen
-Expires: August 16, 2018                                      J. Jimenez
+Expires: September 6, 2018                                    J. Jimenez
                                                                 Ericsson
-                                                       February 12, 2018
+                                                           March 5, 2018
 
 
 Publish-Subscribe Broker for the Constrained Application Protocol (CoAP)
@@ -37,7 +37,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on August 16, 2018.
+   This Internet-Draft will expire on September 6, 2018.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Koster, et al.           Expires August 16, 2018                [Page 1]
+Koster, et al.          Expires September 6, 2018               [Page 1]
 
-Internet-Draft      Publish-Subscribe Broker for CoAP      February 2018
+Internet-Draft      Publish-Subscribe Broker for CoAP         March 2018
 
 
    include Simplified BSD License text as described in Section 4.e of
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Koster, et al.           Expires August 16, 2018                [Page 2]
+Koster, et al.          Expires September 6, 2018               [Page 2]
 
-Internet-Draft      Publish-Subscribe Broker for CoAP      February 2018
+Internet-Draft      Publish-Subscribe Broker for CoAP         March 2018
 
 
    energy from their environment.  These devices have limited
@@ -165,9 +165,9 @@ Internet-Draft      Publish-Subscribe Broker for CoAP      February 2018
 
 
 
-Koster, et al.           Expires August 16, 2018                [Page 3]
+Koster, et al.          Expires September 6, 2018               [Page 3]
 
-Internet-Draft      Publish-Subscribe Broker for CoAP      February 2018
+Internet-Draft      Publish-Subscribe Broker for CoAP         March 2018
 
 
    CoAP pub/sub Client:  A CoAP client which is capable of publish or
@@ -221,9 +221,9 @@ Internet-Draft      Publish-Subscribe Broker for CoAP      February 2018
 
 
 
-Koster, et al.           Expires August 16, 2018                [Page 4]
+Koster, et al.          Expires September 6, 2018               [Page 4]
 
-Internet-Draft      Publish-Subscribe Broker for CoAP      February 2018
+Internet-Draft      Publish-Subscribe Broker for CoAP         March 2018
 
 
 3.3.  CoAP Pub/sub Client
@@ -277,9 +277,9 @@ Internet-Draft      Publish-Subscribe Broker for CoAP      February 2018
 
 
 
-Koster, et al.           Expires August 16, 2018                [Page 5]
+Koster, et al.          Expires September 6, 2018               [Page 5]
 
-Internet-Draft      Publish-Subscribe Broker for CoAP      February 2018
+Internet-Draft      Publish-Subscribe Broker for CoAP         March 2018
 
 
 4.  CoAP Pub/sub REST API
@@ -333,9 +333,9 @@ Internet-Draft      Publish-Subscribe Broker for CoAP      February 2018
 
 
 
-Koster, et al.           Expires August 16, 2018                [Page 6]
+Koster, et al.          Expires September 6, 2018               [Page 6]
 
-Internet-Draft      Publish-Subscribe Broker for CoAP      February 2018
+Internet-Draft      Publish-Subscribe Broker for CoAP         March 2018
 
 
    URI Template Variables:  ps := Pub/sub REST API entry point
@@ -389,9 +389,9 @@ Internet-Draft      Publish-Subscribe Broker for CoAP      February 2018
 
 
 
-Koster, et al.           Expires August 16, 2018                [Page 7]
+Koster, et al.          Expires September 6, 2018               [Page 7]
 
-Internet-Draft      Publish-Subscribe Broker for CoAP      February 2018
+Internet-Draft      Publish-Subscribe Broker for CoAP         March 2018
 
 
           Client                                          Broker
@@ -445,9 +445,9 @@ Internet-Draft      Publish-Subscribe Broker for CoAP      February 2018
 
 
 
-Koster, et al.           Expires August 16, 2018                [Page 8]
+Koster, et al.          Expires September 6, 2018               [Page 8]
 
-Internet-Draft      Publish-Subscribe Broker for CoAP      February 2018
+Internet-Draft      Publish-Subscribe Broker for CoAP         March 2018
 
 
    Topics may be created as sub-topics of other topics.  A client MAY
@@ -501,9 +501,9 @@ Internet-Draft      Publish-Subscribe Broker for CoAP      February 2018
 
 
 
-Koster, et al.           Expires August 16, 2018                [Page 9]
+Koster, et al.          Expires September 6, 2018               [Page 9]
 
-Internet-Draft      Publish-Subscribe Broker for CoAP      February 2018
+Internet-Draft      Publish-Subscribe Broker for CoAP         March 2018
 
 
           Client                                          Broker
@@ -557,9 +557,9 @@ Internet-Draft      Publish-Subscribe Broker for CoAP      February 2018
 
 
 
-Koster, et al.           Expires August 16, 2018               [Page 10]
+Koster, et al.          Expires September 6, 2018              [Page 10]
 
-Internet-Draft      Publish-Subscribe Broker for CoAP      February 2018
+Internet-Draft      Publish-Subscribe Broker for CoAP         March 2018
 
 
    requests to a topic while pending resolution of notifications to
@@ -613,9 +613,9 @@ Internet-Draft      Publish-Subscribe Broker for CoAP      February 2018
 
 
 
-Koster, et al.           Expires August 16, 2018               [Page 11]
+Koster, et al.          Expires September 6, 2018              [Page 11]
 
-Internet-Draft      Publish-Subscribe Broker for CoAP      February 2018
+Internet-Draft      Publish-Subscribe Broker for CoAP         March 2018
 
 
    Content-Format:  Any valid CoAP content format
@@ -669,9 +669,9 @@ Internet-Draft      Publish-Subscribe Broker for CoAP      February 2018
 
 
 
-Koster, et al.           Expires August 16, 2018               [Page 12]
+Koster, et al.          Expires September 6, 2018              [Page 12]
 
-Internet-Draft      Publish-Subscribe Broker for CoAP      February 2018
+Internet-Draft      Publish-Subscribe Broker for CoAP         March 2018
 
 
 4.4.  SUBSCRIBE
@@ -725,9 +725,9 @@ Internet-Draft      Publish-Subscribe Broker for CoAP      February 2018
 
 
 
-Koster, et al.           Expires August 16, 2018               [Page 13]
+Koster, et al.          Expires September 6, 2018              [Page 13]
 
-Internet-Draft      Publish-Subscribe Broker for CoAP      February 2018
+Internet-Draft      Publish-Subscribe Broker for CoAP         March 2018
 
 
       q := Query Filter (optional).  MAY contain a query filter list as
@@ -781,9 +781,9 @@ Internet-Draft      Publish-Subscribe Broker for CoAP      February 2018
 
 
 
-Koster, et al.           Expires August 16, 2018               [Page 14]
+Koster, et al.          Expires September 6, 2018              [Page 14]
 
-Internet-Draft      Publish-Subscribe Broker for CoAP      February 2018
+Internet-Draft      Publish-Subscribe Broker for CoAP         March 2018
 
 
    CoAP GET with Observe using an Observe parameter of 1 or send a CoAP
@@ -837,9 +837,9 @@ Internet-Draft      Publish-Subscribe Broker for CoAP      February 2018
 
 
 
-Koster, et al.           Expires August 16, 2018               [Page 15]
+Koster, et al.          Expires September 6, 2018              [Page 15]
 
-Internet-Draft      Publish-Subscribe Broker for CoAP      February 2018
+Internet-Draft      Publish-Subscribe Broker for CoAP         March 2018
 
 
 4.6.  READ
@@ -893,9 +893,9 @@ Internet-Draft      Publish-Subscribe Broker for CoAP      February 2018
 
 
 
-Koster, et al.           Expires August 16, 2018               [Page 16]
+Koster, et al.          Expires September 6, 2018              [Page 16]
 
-Internet-Draft      Publish-Subscribe Broker for CoAP      February 2018
+Internet-Draft      Publish-Subscribe Broker for CoAP         March 2018
 
 
    Failure:  4.15 "Unsupported Content Format".  Unsupported content-
@@ -949,9 +949,9 @@ Internet-Draft      Publish-Subscribe Broker for CoAP      February 2018
 
 
 
-Koster, et al.           Expires August 16, 2018               [Page 17]
+Koster, et al.          Expires September 6, 2018              [Page 17]
 
-Internet-Draft      Publish-Subscribe Broker for CoAP      February 2018
+Internet-Draft      Publish-Subscribe Broker for CoAP         March 2018
 
 
    URI Template Variables:  ps := Pub/sub REST API entry point
@@ -1005,9 +1005,9 @@ Internet-Draft      Publish-Subscribe Broker for CoAP      February 2018
 
 
 
-Koster, et al.           Expires August 16, 2018               [Page 18]
+Koster, et al.          Expires September 6, 2018              [Page 18]
 
-Internet-Draft      Publish-Subscribe Broker for CoAP      February 2018
+Internet-Draft      Publish-Subscribe Broker for CoAP         March 2018
 
 
    A CoAP pub/sub Broker may alternatively register links to its topics
@@ -1061,9 +1061,9 @@ Internet-Draft      Publish-Subscribe Broker for CoAP      February 2018
 
 
 
-Koster, et al.           Expires August 16, 2018               [Page 19]
+Koster, et al.          Expires September 6, 2018              [Page 19]
 
-Internet-Draft      Publish-Subscribe Broker for CoAP      February 2018
+Internet-Draft      Publish-Subscribe Broker for CoAP         March 2018
 
 
    the broker on the same topic before the time indicated in Max-Age has
@@ -1117,9 +1117,9 @@ Internet-Draft      Publish-Subscribe Broker for CoAP      February 2018
 
 
 
-Koster, et al.           Expires August 16, 2018               [Page 20]
+Koster, et al.          Expires September 6, 2018              [Page 20]
 
-Internet-Draft      Publish-Subscribe Broker for CoAP      February 2018
+Internet-Draft      Publish-Subscribe Broker for CoAP         March 2018
 
 
    receival, the Broker can read the unencrypted CoAP header to forward
@@ -1173,9 +1173,9 @@ Internet-Draft      Publish-Subscribe Broker for CoAP      February 2018
 
 
 
-Koster, et al.           Expires August 16, 2018               [Page 21]
+Koster, et al.          Expires September 6, 2018              [Page 21]
 
-Internet-Draft      Publish-Subscribe Broker for CoAP      February 2018
+Internet-Draft      Publish-Subscribe Broker for CoAP         March 2018
 
 
    o  Description: This error code is used by a server to indicate that
@@ -1229,9 +1229,9 @@ Internet-Draft      Publish-Subscribe Broker for CoAP      February 2018
 
 
 
-Koster, et al.           Expires August 16, 2018               [Page 22]
+Koster, et al.          Expires September 6, 2018              [Page 22]
 
-Internet-Draft      Publish-Subscribe Broker for CoAP      February 2018
+Internet-Draft      Publish-Subscribe Broker for CoAP         March 2018
 
 
 11.2.  Informative References
@@ -1285,4 +1285,4 @@ Authors' Addresses
 
 
 
-Koster, et al.           Expires August 16, 2018               [Page 23]
+Koster, et al.          Expires September 6, 2018              [Page 23]
