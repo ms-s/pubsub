@@ -1155,21 +1155,21 @@ Internet-Draft      Publish-Subscribe Broker for CoAP         March 2018
 
    o  Response Code: 2.07
 
-   o  Description: No Content
+   o  Description: Add No Content response to GET to the existing
+      definition of the 2.07 response code.
 
    o  Reference: [[This document]]
 
    o  Notes: The server sends this code to the client to indicate that
-      the request was valid and accepted, but the response may contain
+      the request was valid and accepted, but the responce may contain
       an empty payload.  It is comparable to and may be proxied with the
-      HTTP 204 No Content status code.
+      http 204 No Content status code.
 
 9.4.  Response Code value '4.29'
 
    o  Response Code: 4.29
 
-   o  Description: This error code is used by a server to indicate that
-      a client is making too many requests on a resource.
+
 
 
 
@@ -1177,6 +1177,9 @@ Koster, et al.          Expires September 6, 2018              [Page 21]
 
 Internet-Draft      Publish-Subscribe Broker for CoAP         March 2018
 
+
+   o  Description: This error code is used by a server to indicate that
+      a client is making too many requests on a resource.
 
    o  Reference: [[This document]]
 
@@ -1226,9 +1229,6 @@ Internet-Draft      Publish-Subscribe Broker for CoAP         March 2018
 
 
 
-
-
-
 Koster, et al.          Expires September 6, 2018              [Page 22]
 
 Internet-Draft      Publish-Subscribe Broker for CoAP         March 2018
@@ -1239,13 +1239,13 @@ Internet-Draft      Publish-Subscribe Broker for CoAP         March 2018
    [I-D.ietf-core-resource-directory]
               Shelby, Z., Koster, M., Bormann, C., Stok, P., and C.
               Amsuess, "CoRE Resource Directory", draft-ietf-core-
-              resource-directory-13 (work in progress), March 2018.
+              resource-directory-12 (work in progress), October 2017.
 
    [I-D.palombini-ace-coap-pubsub-profile]
               Palombini, F., "CoAP Pub-Sub Profile for Authentication
               and Authorization for Constrained Environments (ACE)",
-              draft-palombini-ace-coap-pubsub-profile-02 (work in
-              progress), March 2018.
+              draft-palombini-ace-coap-pubsub-profile-01 (work in
+              progress), September 2017.
 
    [I-D.selander-ace-object-security]
               Selander, G., Mattsson, J., Palombini, F., and L. Seitz,
