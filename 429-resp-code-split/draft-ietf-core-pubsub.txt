@@ -88,11 +88,10 @@ Table of Contents
      9.1.  Resource Type value 'core.ps' . . . . . . . . . . . . . .  21
      9.2.  Resource Type value 'core.ps.discover'  . . . . . . . . .  21
      9.3.  Response Code value '2.07'  . . . . . . . . . . . . . . .  21
-     9.4.  Response Code value '4.29'  . . . . . . . . . . . . . . .  21
-   10. Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  22
+   10. Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  21
    11. References  . . . . . . . . . . . . . . . . . . . . . . . . .  22
      11.1.  Normative References . . . . . . . . . . . . . . . . . .  22
-     11.2.  Informative References . . . . . . . . . . . . . . . . .  23
+     11.2.  Informative References . . . . . . . . . . . . . . . . .  22
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  23
 
 1.  Introduction
@@ -106,6 +105,7 @@ Table of Contents
 
    One important class of constrained devices includes devices that are
    intended to run for years from a small battery, or by scavenging
+   energy from their environment.  These devices have limited
 
 
 
@@ -114,7 +114,6 @@ Koster, et al.          Expires September 6, 2018               [Page 2]
 Internet-Draft      Publish-Subscribe Broker for CoAP         March 2018
 
 
-   energy from their environment.  These devices have limited
    reachability because they spend most of their time in a sleeping
    state with no network connectivity.  Devices may also have limited
    reachability due to certain middle-boxes, such as Network Address
@@ -161,6 +160,7 @@ Internet-Draft      Publish-Subscribe Broker for CoAP         March 2018
       to the right destinations.  The broker can also temporarily store
       publications to satisfy future subscriptions and pending
       notifications.
+
 
 
 
@@ -1049,12 +1049,12 @@ Internet-Draft      Publish-Subscribe Broker for CoAP         March 2018
    popular topics in a short period of time.
 
    If the broker is unable to serve a certain client that is sending
-   publish messages too fast, the broker MUST respond with Response Code
-   4.29, "Too Many Requests".  This Response Code is like HTTP 429 "Too
-   Many Requests" but uses the Max-Age Option in place of the "Retry-
-   After" header field to indicate the number of seconds after which to
-   retry.  The broker MAY stop creating notifications from the publish
-   messages from this client and to this topic for the indicated time.
+   publish messages too fast, the broker SHOULD respond with Response
+   Code 4.29, "Too Many Requests" [I-D.keranen-core-too-many-reqs] and
+   set the Max-Age Option to indicate the number of seconds after which
+   the client can retry.  The broker MAY stop creating notifications
+   from the publish messages from this client and to this topic for the
+   indicated time.
 
    If a client receives the 4.29 Response Code from the broker for a
    publish message to a topic, it MUST NOT send new publish messages to
@@ -1165,10 +1165,10 @@ Internet-Draft      Publish-Subscribe Broker for CoAP         March 2018
       an empty payload.  It is comparable to and may be proxied with the
       http 204 No Content status code.
 
-9.4.  Response Code value '4.29'
+10.  Acknowledgements
 
-   o  Response Code: 4.29
-
+   The authors would like to thank Hannes Tschofenig, Zach Shelby, Mohit
+   Sethi, Peter van der Stok, Tim Kellogg, Anders Eriksson, Goran
 
 
 
@@ -1178,23 +1178,17 @@ Koster, et al.          Expires September 6, 2018              [Page 21]
 Internet-Draft      Publish-Subscribe Broker for CoAP         March 2018
 
 
-   o  Description: This error code is used by a server to indicate that
-      a client is making too many requests on a resource.
-
-   o  Reference: [[This document]]
-
-   o  Notes: None
-
-10.  Acknowledgements
-
-   The authors would like to thank Hannes Tschofenig, Zach Shelby, Mohit
-   Sethi, Peter van der Stok, Tim Kellogg, Anders Eriksson, Goran
    Selander, Mikko Majanen, and Olaf Bergmann for their contributions
    and reviews.
 
 11.  References
 
 11.1.  Normative References
+
+   [I-D.keranen-core-too-many-reqs]
+              Keranen, A., "Too Many Requests Response Code for the
+              Constrained Application Protocol", draft-keranen-core-too-
+              many-reqs-00 (work in progress), March 2018.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -1225,6 +1219,12 @@ Internet-Draft      Publish-Subscribe Broker for CoAP         March 2018
               DOI 10.17487/RFC7641, September 2015,
               <https://www.rfc-editor.org/info/rfc7641>.
 
+11.2.  Informative References
+
+   [I-D.ietf-core-resource-directory]
+              Shelby, Z., Koster, M., Bormann, C., Stok, P., and C.
+              Amsuess, "CoRE Resource Directory", draft-ietf-core-
+              resource-directory-13 (work in progress), March 2018.
 
 
 
@@ -1234,18 +1234,11 @@ Koster, et al.          Expires September 6, 2018              [Page 22]
 Internet-Draft      Publish-Subscribe Broker for CoAP         March 2018
 
 
-11.2.  Informative References
-
-   [I-D.ietf-core-resource-directory]
-              Shelby, Z., Koster, M., Bormann, C., Stok, P., and C.
-              Amsuess, "CoRE Resource Directory", draft-ietf-core-
-              resource-directory-12 (work in progress), October 2017.
-
    [I-D.palombini-ace-coap-pubsub-profile]
               Palombini, F., "CoAP Pub-Sub Profile for Authentication
               and Authorization for Constrained Environments (ACE)",
-              draft-palombini-ace-coap-pubsub-profile-01 (work in
-              progress), September 2017.
+              draft-palombini-ace-coap-pubsub-profile-02 (work in
+              progress), March 2018.
 
    [I-D.selander-ace-object-security]
               Selander, G., Mattsson, J., Palombini, F., and L. Seitz,
@@ -1274,6 +1267,13 @@ Authors' Addresses
    Ericsson
 
    Email: jaime.jimenez@ericsson.com
+
+
+
+
+
+
+
 
 
 
