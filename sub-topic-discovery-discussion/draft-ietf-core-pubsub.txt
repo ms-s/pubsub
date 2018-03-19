@@ -11,7 +11,7 @@ Expires: September 20, 2018                                   J. Jimenez
 
 
 Publish-Subscribe Broker for the Constrained Application Protocol (CoAP)
-                     draft-ietf-core-coap-pubsub-03
+                     draft-ietf-core-coap-pubsub-04
 
 Abstract
 
@@ -88,11 +88,10 @@ Table of Contents
      9.1.  Resource Type value 'core.ps' . . . . . . . . . . . . . .  21
      9.2.  Resource Type value 'core.ps.discover'  . . . . . . . . .  21
      9.3.  Response Code value '2.07'  . . . . . . . . . . . . . . .  21
-     9.4.  Response Code value '4.29'  . . . . . . . . . . . . . . .  21
-   10. Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  22
+   10. Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  21
    11. References  . . . . . . . . . . . . . . . . . . . . . . . . .  22
      11.1.  Normative References . . . . . . . . . . . . . . . . . .  22
-     11.2.  Informative References . . . . . . . . . . . . . . . . .  23
+     11.2.  Informative References . . . . . . . . . . . . . . . . .  22
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  23
 
 1.  Introduction
@@ -106,6 +105,7 @@ Table of Contents
 
    One important class of constrained devices includes devices that are
    intended to run for years from a small battery, or by scavenging
+   energy from their environment.  These devices have limited
 
 
 
@@ -114,7 +114,6 @@ Koster, et al.         Expires September 20, 2018               [Page 2]
 Internet-Draft      Publish-Subscribe Broker for CoAP         March 2018
 
 
-   energy from their environment.  These devices have limited
    reachability because they spend most of their time in a sleeping
    state with no network connectivity.  Devices may also have limited
    reachability due to certain middle-boxes, such as Network Address
@@ -161,6 +160,7 @@ Internet-Draft      Publish-Subscribe Broker for CoAP         March 2018
       to the right destinations.  The broker can also temporarily store
       publications to satisfy future subscriptions and pending
       notifications.
+
 
 
 
@@ -313,7 +313,7 @@ Internet-Draft      Publish-Subscribe Broker for CoAP         March 2018
    Figure 4 shows an example of a client looking for a topic with a
    resource type (rt) of "temperature" using Discover.  The client then
    receives the URI of the resource and its content-format.  A pub/sub
-   broker wishing to advertize topic discovery MUST use the relation
+   broker wishing to advertise topic discovery MUST use the relation
    rt=core.ps.discover in the link.
 
    A CoAP pub/sub Broker MAY expose the Discover interface through the
@@ -321,15 +321,15 @@ Internet-Draft      Publish-Subscribe Broker for CoAP         March 2018
    known/core in addition to links to the pub/sub API.  Figure 5 shows
    an example of topic discovery through .well-known/core.
 
+   Topics in the broker may be created in hierarchies (see {create})
+   with parent topics having sub-topics.  For a discovery the broker may
+   choose to not expose the sub-topics in order to limit amount of topic
+   links sent in a discovery response.  The client can then perform
+   discovery for the parent topics it wants to discover the sub-topics.
+
    The DISCOVER interface is specified as follows:
 
    Interaction:  Client -> Broker
-
-   Method:  GET
-
-   URI Template:  {+ps}/{+topic}{?q*}
-
-
 
 
 
@@ -337,6 +337,10 @@ Koster, et al.         Expires September 20, 2018               [Page 6]
 
 Internet-Draft      Publish-Subscribe Broker for CoAP         March 2018
 
+
+   Method:  GET
+
+   URI Template:  {+ps}/{+topic}{?q*}
 
    URI Template Variables:  ps := Pub/sub REST API entry point
       (optional).  The entry point of the pub/sub REST API, as obtained
@@ -375,10 +379,6 @@ Internet-Draft      Publish-Subscribe Broker for CoAP         March 2018
 
 
               Figure 3: Example of DISCOVER pub/sub function
-
-
-
-
 
 
 
@@ -583,7 +583,7 @@ Internet-Draft      Publish-Subscribe Broker for CoAP         March 2018
    A Broker MAY perform garbage collection of stored representations
    which have been delivered to all subscribers or which have timed out.
    A Broker MAY retain at least one most recently published
-   representation to return in response to SUBSRCIBE and READ requests.
+   representation to return in response to SUBSCRIBE and READ requests.
 
    A Broker MUST make a best-effort attempt to notify all clients
    subscribed on a particular topic each time it receives a publish on
@@ -927,7 +927,7 @@ Internet-Draft      Publish-Subscribe Broker for CoAP         March 2018
 
 4.7.  REMOVE
 
-   A CoAP pub/sub broker MAY allow clientsremove a topics from the
+   A CoAP pub/sub broker MAY allow clients to remove topics from the
    broker using the CoAP Delete method on the URI of the topic.  The
    CoAP pub/sub Broker MUST return "2.02 Deleted" if the removal is
    successful.  The broker MUST return the appropriate 4.xx response
@@ -1049,12 +1049,12 @@ Internet-Draft      Publish-Subscribe Broker for CoAP         March 2018
    popular topics in a short period of time.
 
    If the broker is unable to serve a certain client that is sending
-   publish messages too fast, the broker MUST respond with Response Code
-   4.29, "Too Many Requests".  This Response Code is like HTTP 429 "Too
-   Many Requests" but uses the Max-Age Option in place of the "Retry-
-   After" header field to indicate the number of seconds after which to
-   retry.  The broker MAY stop creating notifications from the publish
-   messages from this client and to this topic for the indicated time.
+   publish messages too fast, the broker SHOULD respond with Response
+   Code 4.29, "Too Many Requests" [I-D.keranen-core-too-many-reqs] and
+   set the Max-Age Option to indicate the number of seconds after which
+   the client can retry.  The broker MAY stop creating notifications
+   from the publish messages from this client and to this topic for the
+   indicated time.
 
    If a client receives the 4.29 Response Code from the broker for a
    publish message to a topic, it MUST NOT send new publish messages to
@@ -1155,35 +1155,14 @@ Internet-Draft      Publish-Subscribe Broker for CoAP         March 2018
 
    o  Response Code: 2.07
 
-   o  Description: Add No Content response to GET to the existing
-      definition of the 2.07 response code.
+   o  Description: No Content
 
    o  Reference: [[This document]]
 
    o  Notes: The server sends this code to the client to indicate that
-      the request was valid and accepted, but the responce may contain
+      the request was valid and accepted, but the response may contain
       an empty payload.  It is comparable to and may be proxied with the
-      http 204 No Content status code.
-
-9.4.  Response Code value '4.29'
-
-   o  Response Code: 4.29
-
-
-
-
-
-Koster, et al.         Expires September 20, 2018              [Page 21]
-
-Internet-Draft      Publish-Subscribe Broker for CoAP         March 2018
-
-
-   o  Description: This error code is used by a server to indicate that
-      a client is making too many requests on a resource.
-
-   o  Reference: [[This document]]
-
-   o  Notes: None
+      HTTP 204 No Content status code.
 
 10.  Acknowledgements
 
@@ -1192,9 +1171,21 @@ Internet-Draft      Publish-Subscribe Broker for CoAP         March 2018
    Selander, Mikko Majanen, and Olaf Bergmann for their contributions
    and reviews.
 
+
+
+Koster, et al.         Expires September 20, 2018              [Page 21]
+
+Internet-Draft      Publish-Subscribe Broker for CoAP         March 2018
+
+
 11.  References
 
 11.1.  Normative References
+
+   [I-D.keranen-core-too-many-reqs]
+              Keranen, A., "Too Many Requests Response Code for the
+              Constrained Application Protocol", draft-keranen-core-too-
+              many-reqs-00 (work in progress), March 2018.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -1225,6 +1216,15 @@ Internet-Draft      Publish-Subscribe Broker for CoAP         March 2018
               DOI 10.17487/RFC7641, September 2015,
               <https://www.rfc-editor.org/info/rfc7641>.
 
+11.2.  Informative References
+
+   [I-D.ietf-core-object-security]
+              Selander, G., Mattsson, J., Palombini, F., and L. Seitz,
+              "Object Security for Constrained RESTful Environments
+              (OSCORE)", draft-ietf-core-object-security-11 (work in
+              progress), March 2018.
+
+
 
 
 
@@ -1234,23 +1234,16 @@ Koster, et al.         Expires September 20, 2018              [Page 22]
 Internet-Draft      Publish-Subscribe Broker for CoAP         March 2018
 
 
-11.2.  Informative References
-
    [I-D.ietf-core-resource-directory]
               Shelby, Z., Koster, M., Bormann, C., Stok, P., and C.
               Amsuess, "CoRE Resource Directory", draft-ietf-core-
-              resource-directory-12 (work in progress), October 2017.
+              resource-directory-13 (work in progress), March 2018.
 
    [I-D.palombini-ace-coap-pubsub-profile]
               Palombini, F., "CoAP Pub-Sub Profile for Authentication
               and Authorization for Constrained Environments (ACE)",
-              draft-palombini-ace-coap-pubsub-profile-01 (work in
-              progress), September 2017.
-
-   [I-D.selander-ace-object-security]
-              Selander, G., Mattsson, J., Palombini, F., and L. Seitz,
-              "Object Security of CoAP (OSCOAP)", draft-selander-ace-
-              object-security-06 (work in progress), October 2016.
+              draft-palombini-ace-coap-pubsub-profile-02 (work in
+              progress), March 2018.
 
    [RFC5988]  Nottingham, M., "Web Linking", RFC 5988,
               DOI 10.17487/RFC5988, October 2010,
@@ -1274,6 +1267,13 @@ Authors' Addresses
    Ericsson
 
    Email: jaime.jimenez@ericsson.com
+
+
+
+
+
+
+
 
 
 
