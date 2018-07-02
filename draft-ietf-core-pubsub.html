@@ -311,7 +311,7 @@ ul.toc li {
   <link rel="schema.dct" href="http://purl.org/dc/terms/" />
 
   <meta name="dct.creator" content="Koster, M., Keranen, A., and J. Jim&#233;nez" />
-  <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-core-coap-pubsub-04" />
+  <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-core-coap-pubsub-05" />
   <meta name="dct.issued" scheme="ISO8601" content="2018-02" />
   <meta name="dct.abstract" content="The Constrained Application Protocol (CoAP), and related extensions are intended to support machine-to-machine communication in systems where one or more nodes are resource constrained, in particular for low power wireless sensor networks. This document defines a publish-subscribe Broker for CoAP that extends the capabilities of CoAP for supporting nodes with long breaks in connectivity and/or up-time." />
   <meta name="description" content="The Constrained Application Protocol (CoAP), and related extensions are intended to support machine-to-machine communication in systems where one or more nodes are resource constrained, in particular for low power wireless sensor networks. This document defines a publish-subscribe Broker for CoAP that extends the capabilities of CoAP for supporting nodes with long breaks in connectivity and/or up-time." />
@@ -353,7 +353,7 @@ ul.toc li {
   </table>
 
   <p class="title">Publish-Subscribe Broker for the Constrained Application Protocol (CoAP)<br />
-  <span class="filename">draft-ietf-core-coap-pubsub-04</span></p>
+  <span class="filename">draft-ietf-core-coap-pubsub-05</span></p>
   
   <h1 id="rfc.abstract"><a href="#rfc.abstract">Abstract</a></h1>
 <p>The Constrained Application Protocol (CoAP), and related extensions are intended to support machine-to-machine communication in systems where one or more nodes are resource constrained, in particular for low power wireless sensor networks. This document defines a publish-subscribe Broker for CoAP that extends the capabilities of CoAP for supporting nodes with long breaks in connectivity and/or up-time.</p>
@@ -527,7 +527,8 @@ Clients        pub/sub         Broker
 <p id="rfc.section.4.1.p.1">CoAP pub/sub Clients discover CoAP pub/sub Brokers by using CoAP Simple Discovery or through a Resource Directory (RD) <a href="#I-D.ietf-core-resource-directory" class="xref">[I-D.ietf-core-resource-directory]</a>. A CoAP pub/sub Broker SHOULD indicate its presence and availability on a network by exposing a link to the entry point of its pub/sub API at its .well-known/core location <a href="#RFC6690" class="xref">[RFC6690]</a>. A CoAP pub/sub Broker MAY register its pub/sub REST API entry point with a Resource Directory. <a href="#discover-fig" class="xref">Figure 3</a> shows an example of a client discovering a local pub/sub API using CoAP Simple Discovery. A Broker wishing to advertise the CoAP pub/sub API for Simple Discovery or through a Resource Directory MUST use the link relation rt=core.ps. A Broker MAY advertise its supported content formats and other attributes in the link to its pub/sub API.</p>
 <p id="rfc.section.4.1.p.2">A CoAP pub/sub Broker MAY offer a topic discovery entry point to enable Clients to find topics of interest, either by topic name or by link attributes which may be registered when the topic is created. <a href="#discover-topic-fig" class="xref">Figure 4</a> shows an example of a client looking for a topic with a resource type (rt) of &#8220;temperature&#8221; using Discover. The client then receives the URI of the resource and its content-format. A pub/sub Broker wishing to advertise topic discovery MUST use the relation rt=core.ps.discover in the link.</p>
 <p id="rfc.section.4.1.p.3">A CoAP pub/sub Broker MAY provide topic discovery functionality through the .well-known/core resource. Links to topics may be exposed at .well-known/core in addition to links to the pub/sub API. <a href="#discover-topic-wk-fig" class="xref">Figure 5</a> shows an example of topic discovery through .well-known/core.</p>
-<p id="rfc.section.4.1.p.4">The DISCOVER operation is specified as follows:</p>
+<p id="rfc.section.4.1.p.4">Topics in the broker may be created in hierarchies (see {create}) with parent topics having sub-topics. For a discovery the broker may choose to not expose the sub-topics in order to limit amount of topic links sent in a discovery response. The client can then perform discovery for the parent topics it wants to discover the sub-topics.</p>
+<p id="rfc.section.4.1.p.5">The DISCOVER interface is specified as follows:</p>
 <p></p>
 
 <dl>
@@ -546,7 +547,7 @@ Clients        pub/sub         Broker
 <dt>Content-Format:</dt>
 <dd style="margin-left: 8">application/link-format</dd>
 </dl>
-<p id="rfc.section.4.1.p.6">The following response codes are defined for the DISCOVER operation:</p>
+<p id="rfc.section.4.1.p.7">The following response codes are defined for the DISCOVER operation:</p>
 <p></p>
 
 <dl>
@@ -604,13 +605,14 @@ Client                                          Broker
 <h1 id="rfc.section.4.2">
 <a href="#rfc.section.4.2">4.2.</a> <a href="#sec-create" id="sec-create">CREATE</a>
 </h1>
-<p id="rfc.section.4.2.p.1">A CoAP pubsub Broker SHOULD allow Clients to create new topics on the Broker using CREATE. Some exceptions are for fixed Brokerless devices and pre-configured Brokers in dedicated installations. A client wishing to create a topic MUST use CoAP POST to the pubsub API with a payload indicating the desired topic. The topic specification sent in the payload MUST use a supported serialization of the CoRE link format <a href="#RFC6690" class="xref">[RFC6690]</a>. The target of the link MUST be a URI formatted string. The client MUST indicate the desired content format for publishes to the topic by using the ct (Content Format) link attribute in the link-format payload. The client MAY indicate the lifetime of the topic by including the Max-Age option in the CREATE request.</p>
+<p id="rfc.section.4.2.p.1">A CoAP pub/sub broker SHOULD allow Clients to create new topics on the broker using CREATE. Some exceptions are for fixed brokerless devices and pre-configured brokers in dedicated installations. A client wishing to create a topic MUST use a CoAP POST to the pub/sub API with a payload indicating the desired topic. The topic specification sent in the payload MUST use a supported serialization of the CoRE link format <a href="#RFC6690" class="xref">[RFC6690]</a>. The target of the link MUST be a URI formatted string. The client MUST indicate the desired content format for publishes to the topic by using the ct (Content Format) link attribute in the link-format payload. The client MAY indicate the lifetime of the topic by including the Max-Age option in the CREATE request.</p>
 <p id="rfc.section.4.2.p.2">Topics may be created as sub-topics of other topics. A client MAY create a topic with a ct (Content Format) link attribute value which describes a supported serialization of the CoRE link format <a href="#RFC6690" class="xref">[RFC6690]</a> such as application/link-format (ct=40) or its JSON or CBOR serializations.  If a topic is created which describes a link serialization, that topic may then have sub-topics created under it as shown in <a href="#create-sub-fig" class="xref">Figure 7</a>.</p>
 <p id="rfc.section.4.2.p.3">Ony one level in the topic hierarchy may be created as a result of a CREATE operation, unless create on PUBLISH is supported (see <a href="#sec-publish" class="xref">Section 4.3</a>).  The topic string used in the link target MUST NOT contain the &#8220;/&#8221; character.</p>
 <p id="rfc.section.4.2.p.4">A topic creator MUST include exactly one content format link attribute value (ct) in the create payload. If the Broker does not support the indicated format for both publish and subscribe, it MUST reject the operation with an error code of 4.00 &#8220;Bad Request&#8221;.</p>
 <p id="rfc.section.4.2.p.5">There is no default content format. If no ct is specified, the Broker MUST reject the operation with an error code of 4.00 &#8220;Bad Request&#8221;.</p>
 <p id="rfc.section.4.2.p.6">A Broker MUST return a response code of &#8220;2.01 Created&#8221; if the topic is created and return the URI path of the created topic via Location-Path options. The Broker MUST return the appropriate 4.xx response code indicating the reason for failure if a new topic can not be created. Broker SHOULD remove topics if the Max-Age of the topic is exceeded without any publishes to the topic.  Broker SHOULD retain a topic indefinitely if the Max-Age option is elided or is set to zero upon topic creation. The lifetime of a topic MUST be refreshed upon create operations with a target of an existing topic.</p>
-<p id="rfc.section.4.2.p.7">The CREATE operation is specified as follows:</p>
+<p id="rfc.section.4.2.p.7">Topic hierarchies can be created by creating parent topics. A parent topic is created with a POST using ct (Content Format) link attribute value which describes a supported serialization of the CoRE link format <a href="#RFC6690" class="xref">[RFC6690]</a>, such as application/link-format (ct=40) or its JSON or CBOR serializations.  If a topic is created which describes a link serialization, that topic may then have sub-topics created under it as shown in <a href="#create-sub-fig" class="xref">Figure 7</a>.</p>
+<p id="rfc.section.4.2.p.8">The CREATE interface is specified as follows:</p>
 <p></p>
 
 <dl>
@@ -629,7 +631,7 @@ Client                                          Broker
 <dt>Payload:</dt>
 <dd style="margin-left: 8">The desired topic to CREATE</dd>
 </dl>
-<p id="rfc.section.4.2.p.9">The following response codes are defined for the CREATE operation:</p>
+<p id="rfc.section.4.2.p.10">The following response codes are defined for the CREATE operation:</p>
 <p></p>
 
 <dl>
@@ -663,20 +665,20 @@ Client                                          Broker
 <pre>
 Client                                          Broker
   |                                               |
-  | ------- POST /ps/ "&lt;mainTopic&gt;;ct=40" -------&gt;|
+  | ----- POST /ps/ "&lt;parent-topic&gt;;ct=40" ------&gt;|
   |                                               |
   | &lt;---------------- 2.01 Created ---------------|
-  |             Location: /ps/mainTopic/          |
+  |            Location: /ps/parent-topic/        |
   |                                               |
-  | --- POST /ps/mainTopic/ "&lt;subTopic&gt;;ct=50" --&gt;|
+  |-- POST /ps/parent-topic/ "&lt;subtopic&gt;;ct=50" -&gt;|
   |                                               |
   | &lt;---------------- 2.01 Created ---------------|
-  |        Location: /ps/mainTopic/subTopic       |
+  |       Location: /ps/parent-topic/subtopic     |
   |                                               |
   |                                               |
 
 </pre>
-<p class="figure">Figure 7: Example of CREATE sub-topic</p>
+<p class="figure">Figure 7: Example of CREATE of topic hierarchy</p>
 <h1 id="rfc.section.4.3">
 <a href="#rfc.section.4.3">4.3.</a> <a href="#sec-publish" id="sec-publish">PUBLISH</a>
 </h1>
