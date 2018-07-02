@@ -604,14 +604,13 @@ Client                                          Broker
 <h1 id="rfc.section.4.2">
 <a href="#rfc.section.4.2">4.2.</a> <a href="#sec-create" id="sec-create">CREATE</a>
 </h1>
-<p id="rfc.section.4.2.p.1">A CoAP pub/sub broker SHOULD allow Clients to create new topics on the broker using CREATE. Some exceptions are for fixed brokerless devices and pre-configured brokers in dedicated installations. A client wishing to create a topic MUST use a CoAP POST to the pub/sub API with a payload indicating the desired topic. The topic specification sent in the payload MUST use a supported serialization of the CoRE link format <a href="#RFC6690" class="xref">[RFC6690]</a>. The target of the link MUST be a URI formatted string. The client MUST indicate the desired content format for publishes to the topic by using the ct (Content Format) link attribute in the link-format payload. The client MAY indicate the lifetime of the topic by including the Max-Age option in the CREATE request.</p>
+<p id="rfc.section.4.2.p.1">A CoAP pubsub Broker SHOULD allow Clients to create new topics on the Broker using CREATE. Some exceptions are for fixed Brokerless devices and pre-configured Brokers in dedicated installations. A client wishing to create a topic MUST use CoAP POST to the pubsub API with a payload indicating the desired topic. The topic specification sent in the payload MUST use a supported serialization of the CoRE link format <a href="#RFC6690" class="xref">[RFC6690]</a>. The target of the link MUST be a URI formatted string. The client MUST indicate the desired content format for publishes to the topic by using the ct (Content Format) link attribute in the link-format payload. The client MAY indicate the lifetime of the topic by including the Max-Age option in the CREATE request.</p>
 <p id="rfc.section.4.2.p.2">Topics may be created as sub-topics of other topics. A client MAY create a topic with a ct (Content Format) link attribute value which describes a supported serialization of the CoRE link format <a href="#RFC6690" class="xref">[RFC6690]</a> such as application/link-format (ct=40) or its JSON or CBOR serializations.  If a topic is created which describes a link serialization, that topic may then have sub-topics created under it as shown in <a href="#create-sub-fig" class="xref">Figure 7</a>.</p>
 <p id="rfc.section.4.2.p.3">Ony one level in the topic hierarchy may be created as a result of a CREATE operation, unless create on PUBLISH is supported (see <a href="#sec-publish" class="xref">Section 4.3</a>).  The topic string used in the link target MUST NOT contain the &#8220;/&#8221; character.</p>
 <p id="rfc.section.4.2.p.4">A topic creator MUST include exactly one content format link attribute value (ct) in the create payload. If the Broker does not support the indicated format for both publish and subscribe, it MUST reject the operation with an error code of 4.00 &#8220;Bad Request&#8221;.</p>
 <p id="rfc.section.4.2.p.5">There is no default content format. If no ct is specified, the Broker MUST reject the operation with an error code of 4.00 &#8220;Bad Request&#8221;.</p>
 <p id="rfc.section.4.2.p.6">A Broker MUST return a response code of &#8220;2.01 Created&#8221; if the topic is created and return the URI path of the created topic via Location-Path options. The Broker MUST return the appropriate 4.xx response code indicating the reason for failure if a new topic can not be created. Broker SHOULD remove topics if the Max-Age of the topic is exceeded without any publishes to the topic.  Broker SHOULD retain a topic indefinitely if the Max-Age option is elided or is set to zero upon topic creation. The lifetime of a topic MUST be refreshed upon create operations with a target of an existing topic.</p>
-<p id="rfc.section.4.2.p.7">Topic hierarchies can be created by creating parent topics. A parent topic is created with a POST using ct (Content Format) link attribute value which describes a supported serialization of the CoRE link format <a href="#RFC6690" class="xref">[RFC6690]</a>, such as application/link-format (ct=40) or its JSON or CBOR serializations.  If a topic is created which describes a link serialization, that topic may then have sub-topics created under it as shown in <a href="#create-sub-fig" class="xref">Figure 7</a>.</p>
-<p id="rfc.section.4.2.p.8">The CREATE interface is specified as follows:</p>
+<p id="rfc.section.4.2.p.7">The CREATE operation is specified as follows:</p>
 <p></p>
 
 <dl>
@@ -630,7 +629,7 @@ Client                                          Broker
 <dt>Payload:</dt>
 <dd style="margin-left: 8">The desired topic to CREATE</dd>
 </dl>
-<p id="rfc.section.4.2.p.10">The following response codes are defined for the CREATE operation:</p>
+<p id="rfc.section.4.2.p.9">The following response codes are defined for the CREATE operation:</p>
 <p></p>
 
 <dl>
@@ -664,20 +663,20 @@ Client                                          Broker
 <pre>
 Client                                          Broker
   |                                               |
-  | ----- POST /ps/ "&lt;parent-topic&gt;;ct=40" ------&gt;|
+  | ------- POST /ps/ "&lt;mainTopic&gt;;ct=40" -------&gt;|
   |                                               |
   | &lt;---------------- 2.01 Created ---------------|
-  |            Location: /ps/parent-topic/        |
+  |             Location: /ps/mainTopic/          |
   |                                               |
-  |-- POST /ps/parent-topic/ "&lt;subtopic&gt;;ct=50" -&gt;|
+  | --- POST /ps/mainTopic/ "&lt;subTopic&gt;;ct=50" --&gt;|
   |                                               |
   | &lt;---------------- 2.01 Created ---------------|
-  |       Location: /ps/parent-topic/subtopic     |
+  |        Location: /ps/mainTopic/subTopic       |
   |                                               |
   |                                               |
 
 </pre>
-<p class="figure">Figure 7: Example of CREATE of topic hierarchy</p>
+<p class="figure">Figure 7: Example of CREATE sub-topic</p>
 <h1 id="rfc.section.4.3">
 <a href="#rfc.section.4.3">4.3.</a> <a href="#sec-publish" id="sec-publish">PUBLISH</a>
 </h1>
@@ -868,7 +867,7 @@ Client                                          Broker
 <h1 id="rfc.section.4.6">
 <a href="#rfc.section.4.6">4.6.</a> <a href="#read" id="read">READ</a>
 </h1>
-<p id="rfc.section.4.6.p.1">A CoAP pub/sub Broker MAY accept Read requests on a topic using the the CoAP GET method if the content format of the request matches the content format the topic was created with. The Broker MUST return a response code of &#8220;2.05 Content&#8221; along with the most recently published value if the topic contains a valid value and the Broker can supply the requested content format.</p>
+<p id="rfc.section.4.6.p.1">A CoAP pub/sub Broker MAY accept Read requests on a topic using the the CoAP GET method if the content format of the request matches the content format the topic was created with.  The Broker MAY accept Read requests which specify content formats that the Broker can supply as alternate content formats to the content format the topic was registered with. The Broker MUST return a response code of &#8220;2.05 Content&#8221; along with the most recently published value if the topic contains a valid value and the Broker can supply the requested content format.</p>
 <p id="rfc.section.4.6.p.2">If the topic was published with the Max-Age option, the Broker MUST set the Max-Age option in the valid response to the amount of time remaining for the topic to be valid since the last publish. The Broker MUST return a response code of &#8220;2.07 No Content&#8221; if the Max-Age of the previously stored value has expired, or if the topic has not yet been published to.</p>
 <p id="rfc.section.4.6.p.3">The Broker MUST return a response code &#8220;4.04 Not Found&#8221; if the topic does not exist or has been removed. The Broker MUST return a response code &#8220;4.15 Unsupported Content Format&#8221; if the Broker can not return the requested content format.</p>
 <p id="rfc.section.4.6.p.4">The READ operation is specified as follows:</p>
